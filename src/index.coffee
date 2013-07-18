@@ -3,7 +3,6 @@ escodegen = require 'escodegen'
 esprima = require 'esprima'
 acorn = require 'acorn'
 reflect = require 'reflect'
-spidermonkey = require 'spidermonkey'
 
 RESERVED = [
   'break', 'case', 'catch', 'class', 'const', 'continue', 'debugger',
