@@ -24,7 +24,7 @@ $(LIBDIR)/%.js: $(SRCDIR)/%.coffee
 
 $(DISTDIR)/bundle.js: $(LIB)
 	@mkdir -p "$(@D)"
-	$(CJSIFY) -x ProjectName $(shell node -pe 'require("./package.json").main') >"$@"
+	$(CJSIFY) -a /node_modules/escodegen/node_modules/source-map/lib/source-map.js: -x esfuzz $(shell node -pe 'require("./package.json").main') >"$@"
 
 .PHONY: phony-dep release test loc clean
 phony-dep:

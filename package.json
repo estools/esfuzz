@@ -27,12 +27,14 @@
   "dependencies": {
     "escodegen": "0.0.24",
     "esprima": "~1.0.3",
-    "acorn": "~0.3.1",
+    "acorn": "~0.3.1"
+  },
+  "optionalDependencies": {
     "reflect": "~0.1.3"
   },
   "devDependencies": {
     "coffee-script-redux": "2.0.0-beta5",
-    "commonjs-everywhere": "0.7.x",
+    "commonjs-everywhere": "0.9.x",
     "mocha": "~1.8.1",
     "semver": "~1.1.4"
   },
