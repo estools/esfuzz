@@ -5,13 +5,18 @@ acorn = require 'acorn'
 reflect = require 'reflect'
 
 RESERVED = [
+  # keywords
   'break', 'case', 'catch', 'class', 'const', 'continue', 'debugger',
   'default', 'delete', 'do', 'else', 'enum', 'export', 'extends', 'finally',
   'for', 'function', 'if', 'import', 'in', 'instanceof', 'new', 'return',
   'super', 'switch', 'this', 'throw', 'try', 'typeof', 'var', 'void', 'while',
   'with',
-  # not reserved in ES5, but reserved in some interpreters and standalone parsers
-  'let', 'yield'
+  # future reserved words
+  'implements', 'let', 'private', 'public', 'yield', 'interface', 'package',
+  'protected', 'static', 'class', 'enum', 'extends', 'super', 'const',
+  'export', 'import',
+  # null, booleans
+  'null', 'true', 'false'
 ]
 
 class RoundtripFailureError extends Error
@@ -23,13 +28,17 @@ class RoundtripFailureError extends Error
 randomInt = (max) -> Math.floor(Math.random() * (max + 1))
 randomElement = (list) -> list[randomInt list.length - 1]
 render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIFY
+take = (n, list) -> e for e, i in list when i < n
 
 
 ## combinators
 
-listOf = (possibleGenerators, probability = 0.5) ->
-  while Math.random() < probability
+listOf = (possibleGenerators) ->
+  while Math.random() < 0.4
     oneOf possibleGenerators
+
+listOfAtLeast = (possibleGenerators, min) ->
+  (oneOf possibleGenerators for _ in [1..min]).concat listOf possibleGenerators
 
 oneOf = (possibleGenerators) ->
   (randomElement possibleGenerators)()
@@ -47,11 +56,11 @@ notReserved = (generator) ->
 
 Program = ->
   type: 'Program'
-  body: listOf statements, 0.8
+  body: listOfAtLeast statements, 1
 
 BlockStatement = ->
   type: 'BlockStatement'
-  body: listOf statements, 0.6
+  body: listOf statements
 
 ExpressionStatement = ->
   type: 'ExpressionStatement'
@@ -87,14 +96,14 @@ SwitchStatement = ->
 SwitchCase = ->
   type: 'SwitchCase'
   test: oneOf expressions
-  consequent: [oneOf statements].concat listOf statements, 0.2
+  consequent: [oneOf statements].concat listOf statements
 
 # TODO: SwitchCaseFallthrough
 
 SwitchCaseDefault = ->
   type: 'SwitchCase'
   test: null
-  consequent: [oneOf statements].concat listOf statements, 0.2
+  consequent: [oneOf statements].concat listOf statements
 
 # TODO: continue and break can only exist in loops; return can only exist within functions
 #ContinueStatement = ->
@@ -108,6 +117,26 @@ SwitchCaseDefault = ->
 #ReturnStatement = ->
 #  type: 'ReturnStatement'
 #  argument: maybe -> oneOf expressions
+
+FunctionDeclaration = ->
+    type: 'FunctionDeclaration'
+    id: notReserved Identifier
+    params: listOf [(-> notReserved Identifier)], 10
+    defaults: []
+    rest: null
+    body: BlockStatement()
+    generator: false
+    expression: false
+
+FunctionExpression = ->
+    type: 'FunctionExpression'
+    id: maybe -> notReserved Identifier
+    params: listOf [(-> notReserved Identifier)], 10
+    defaults: []
+    rest: null
+    body: BlockStatement()
+    generator: false
+    expression: false
 
 # TODO: second code path that generates full range of characters allowed in identifier{Start,Part}
 Identifier = ->
@@ -135,9 +164,9 @@ String_ = ->
 
 
 terminalStatements = [ExpressionStatement, EmptyStatement, DebuggerStatement]
-toplevelStatements = [terminalStatements..., IfStatement, BlockStatement, WithStatement, SwitchStatement]
+toplevelStatements = [terminalStatements..., IfStatement, BlockStatement, WithStatement, SwitchStatement, FunctionDeclaration]
 statements = [toplevelStatements...]
-expressions = [Number_, String_, (-> notReserved Identifier)]
+expressions = [Number_, String_, (-> notReserved Identifier), FunctionExpression]
 
 process.on 'SIGINT', ->
   process.stdout.write '  \n'
