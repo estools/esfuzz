@@ -2,7 +2,7 @@ escodegen = require 'escodegen'
 
 esprima = require 'esprima'
 acorn = require 'acorn'
-reflect = require 'reflect'
+#reflect = require 'reflect'
 
 RESERVED = [
   # keywords
@@ -24,7 +24,7 @@ class RoundtripFailureError extends Error
 
 ## helpers
 
-@setImmediate ?= (fn) -> setTimeout fn, 0
+global.setImmediate ?= (fn) -> setTimeout fn, 0
 randomInt = (max) -> Math.floor(Math.random() * (max + 1))
 randomElement = (list) -> list[randomInt list.length - 1]
 render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIFY
@@ -168,7 +168,7 @@ toplevelStatements = [terminalStatements..., IfStatement, BlockStatement, WithSt
 statements = [toplevelStatements...]
 expressions = [Number_, String_, (-> notReserved Identifier), FunctionExpression]
 
-process.on 'SIGINT', ->
+process.on? 'SIGINT', ->
   process.stdout.write '  \n'
   process.exit 0
 
@@ -199,7 +199,11 @@ exports.fuzz = fuzz = (desiredCount, cb) ->
       err.js = program
       cb err
       return
-    process.stdout.write "\b\b\b\b\b\b\b\b\b\b#{counter}"
+    if process.stdout
+      process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{counter}"
+    else if 0 is counter % 100
+      console.clear?()
+      console.log counter
     targetProgram = render programAST
     for roundTrippedProgram in roundTrippedPrograms when roundTrippedProgram isnt targetProgram
       err = new RoundtripFailureError
@@ -217,4 +221,4 @@ fuzz 1e4, (err) ->
     console.error "\n#{err.stack}\n#{js}\n\n#{JSON.stringify ast}"
     process.exit 1
   else
-    process.stdout.write '\n'
+    process.stdout?.write '\n'
