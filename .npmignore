@@ -1,0 +1,7 @@
+esfuzz-*.tgz
+.travis.yml
+.gitignore
+dist
+src
+test
+Makefile
