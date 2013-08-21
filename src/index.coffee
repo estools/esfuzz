@@ -1,49 +1,7 @@
 escodegen = require 'escodegen'
 
-RESERVED = [
-  # keywords
-  'break', 'case', 'catch', 'class', 'const', 'continue', 'debugger',
-  'default', 'delete', 'do', 'else', 'enum', 'export', 'extends', 'finally',
-  'for', 'function', 'if', 'import', 'in', 'instanceof', 'new', 'return',
-  'super', 'switch', 'this', 'throw', 'try', 'typeof', 'var', 'void', 'while',
-  'with',
-  # future reserved words
-  'implements', 'let', 'private', 'public', 'yield', 'interface', 'package',
-  'protected', 'static', 'class', 'enum', 'extends', 'super', 'const',
-  'export', 'import',
-  # null, booleans
-  'null', 'true', 'false'
-]
-
-
-## helpers
-
-randomInt = (max) -> Math.floor(Math.random() * (max + 1))
-randomElement = (list) -> list[randomInt list.length - 1]
-render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIFY
-take = (n, list) -> e for e, i in list when i < n
-
-
-## combinators
-
-listOf = (possibleGenerators) ->
-  while Math.random() < 0.4
-    oneOf possibleGenerators
-
-listOfAtLeast = (possibleGenerators, min) ->
-  (oneOf possibleGenerators for _ in [1..min]).concat listOf possibleGenerators
-
-oneOf = (possibleGenerators) ->
-  (randomElement possibleGenerators)()
-
-maybe = (generator) ->
-  if randomElement [true, false] then generator() else null
-
-notReserved = (generator) ->
-  id = generator()
-  id.name = if id.name in RESERVED then "#{id.name}_" else id.name
-  id
-
+{randomInt, randomElement} = require './helpers'
+{listOf, listOfAtLeast, oneOf, maybe, notReserved} = require './combinators'
 
 ## node generators
 
@@ -162,11 +120,14 @@ statements = [toplevelStatements...]
 expressions = [Number_, String_, (-> notReserved Identifier), FunctionExpression]
 
 
+
 class RoundtripFailureError extends Error
   name: 'RoundtripFailureError'
   constructor: (@message) ->
     Error.call this
     Error.captureStackTrace? this, RoundtripFailureError
+
+render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIFY
 
 exports.fuzz = (parsers) ->
   programAST = Program()
