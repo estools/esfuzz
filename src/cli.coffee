@@ -1,13 +1,17 @@
+path = require 'path'
+
 nopt = require 'nopt'
 {fuzz} = require './index'
 
 knownOpts =
-  esprima: Boolean
   acorn: Boolean
-  reflectjs: Boolean
-  reflect: Boolean
   es6: Boolean
+  esprima: Boolean
+  help: Boolean
   iterations: Number
+  reflect: Boolean
+  reflectjs: Boolean
+  version: Boolean
 
 optAliases =
   n: '--iterations'
@@ -26,7 +30,29 @@ if options.reflectjs then try parsers.push require 'reflect'
 if options.reflect then try parsers.push Reflect
 
 
-process.on? 'SIGINT', ->
+if options.help
+  $0 = if process.argv[0] is 'node' then process.argv[1] else process.argv[0]
+  $0 = path.basename $0
+  console.log "
+  Usage: #{$0} OPT*
+
+  -n, --iterations NUM  use at most NUM programs
+  --acorn               enable marijnh/acorn parser; default: on
+  --es6                 allow ECMAScript 6 features in generated programs
+  --esprima             enable ariya/esprima parser; default: on
+  --help                display this help message and exit
+  --reflect             enable Reflect.parse parser; default: on if it exists
+  --reflectjs           enable zaach/reflect.js parser
+  --version             display the version number and exit
+"
+  process.exit 0
+
+if options.version
+  console.log (require '../package.json').version
+  process.exit 0
+
+
+process.on 'SIGINT', ->
   process.stdout.write '  \n'
   process.exit 0
 
