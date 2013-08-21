@@ -1,9 +1,5 @@
 escodegen = require 'escodegen'
 
-esprima = require 'esprima'
-acorn = require 'acorn'
-#reflect = require 'reflect'
-
 RESERVED = [
   # keywords
   'break', 'case', 'catch', 'class', 'const', 'continue', 'debugger',
@@ -19,12 +15,9 @@ RESERVED = [
   'null', 'true', 'false'
 ]
 
-class RoundtripFailureError extends Error
-
 
 ## helpers
 
-global.setImmediate ?= (fn) -> setTimeout fn, 0
 randomInt = (max) -> Math.floor(Math.random() * (max + 1))
 randomElement = (list) -> list[randomInt list.length - 1]
 render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIFY
@@ -146,8 +139,8 @@ Identifier = ->
 
 Number_ = -> oneOf [
   -> type: 'Literal', value: 0
-  -> type: 'Literal', value: 0, raw: '0.'
-  -> type: 'Literal', value: 0, raw: '.0'
+  #-> type: 'Literal', value: 0, raw: '0.'
+  #-> type: 'Literal', value: 0, raw: '.0'
   ->
     int = randomInt (Math.pow 2, 53) - 1
     type: 'Literal', value: int, raw: switch randomInt 10
@@ -168,57 +161,26 @@ toplevelStatements = [terminalStatements..., IfStatement, BlockStatement, WithSt
 statements = [toplevelStatements...]
 expressions = [Number_, String_, (-> notReserved Identifier), FunctionExpression]
 
-process.on? 'SIGINT', ->
-  process.stdout.write '  \n'
-  process.exit 0
 
+class RoundtripFailureError extends Error
+  name: 'RoundtripFailureError'
+  constructor: (@message) ->
+    Error.call this
+    Error.captureStackTrace? this, RoundtripFailureError
 
-#console.log render Program()
-#process.exit 0
-
-
-parsers = [esprima, acorn]
-# Reflect.js: don't enable this unless you want lots of failures
-#parsers.push reflect
-if Reflect? and 'function' is typeof Reflect.parse
-  parsers.push Reflect
-
-exports.fuzz = fuzz = (desiredCount, cb) ->
-  if arguments.length < 2
-    cb = desiredCount
-    desiredCount = 1/0
-  counter = 0
-  do recur = ->
-    ++counter
-    programAST = Program()
-    program = escodegen.generate programAST, verbatim: 'raw', format: escodegen.FORMAT_MINIFY
-    try
-      roundTrippedPrograms = (render parser.parse program for parser in parsers)
-    catch err
-      err.ast = programAST
-      err.js = program
-      cb err
-      return
-    if process.stdout
-      process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{counter}"
-    else if 0 is counter % 100
-      console.clear?()
-      console.log counter
-    targetProgram = render programAST
-    for roundTrippedProgram in roundTrippedPrograms when roundTrippedProgram isnt targetProgram
-      err = new RoundtripFailureError
-      err.ast = programAST
-      err.js = program
-      cb err
-      return
-    if counter < desiredCount then setImmediate recur else setImmediate cb
-    return
+exports.fuzz = (parsers) ->
+  programAST = Program()
+  program = escodegen.generate programAST, verbatim: 'raw', format: escodegen.FORMAT_MINIFY
+  try
+    roundTrippedPrograms = (render parser.parse program for parser in parsers)
+  catch err
+    err.ast = programAST
+    err.js = program
+    throw err
+  targetProgram = render programAST
+  for roundTrippedProgram in roundTrippedPrograms when roundTrippedProgram isnt targetProgram
+    err = new RoundtripFailureError
+    err.ast = programAST
+    err.js = program
+    throw err
   return
-
-fuzz 1e4, (err) ->
-  if err?
-    {ast, js} = err
-    console.error "\n#{err.stack}\n#{js}\n\n#{JSON.stringify ast}"
-    process.exit 1
-  else
-    process.stdout?.write '\n'

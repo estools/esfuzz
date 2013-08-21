@@ -4,8 +4,17 @@
   "description": "JS fuzzer for generative testing of parsers that implement the SpiderMonkey Reflect.parse API",
   "homepage": "https://github.com/michaelficarra/esfuzz",
   "keywords": [
-    "fuzzer", "fuzz", "JavaScript", "program", "parser", "test", "generative",
-    "ECMAScript", "ECMA-262", "SpiderMonkey", "Reflect.parse"
+    "fuzzer",
+    "fuzz",
+    "JavaScript",
+    "program",
+    "parser",
+    "test",
+    "generative",
+    "ECMAScript",
+    "ECMA-262",
+    "SpiderMonkey",
+    "Reflect.parse"
   ],
   "author": {
     "name": "Michael Ficarra",
@@ -27,7 +36,8 @@
   "dependencies": {
     "escodegen": "0.0.24",
     "esprima": "~1.0.3",
-    "acorn": "~0.3.1"
+    "acorn": "~0.3.1",
+    "nopt": "~2.1.2"
   },
   "optionalDependencies": {
     "reflect": "~0.1.3"
