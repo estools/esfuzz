@@ -59,15 +59,14 @@ process.on 'SIGINT', ->
 
 counter = 0
 do recur = ->
-  ++counter
-  try
-    fuzz parsers
-  catch err
-    {ast, js} = err
-    console.error "\n\n#{err.stack}\n\n#{js}\n\n#{JSON.stringify ast}"
-    process.exit 1
-  process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{counter}"
   if counter < options.iterations
+    process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{++counter}"
+    try
+      fuzz parsers
+    catch err
+      {ast, js} = err
+      console.error "\n\n#{err.stack}\n\n#{js}\n\n#{JSON.stringify ast}"
+      process.exit 1
     setImmediate recur
   else
     process.stdout.write '\n'
