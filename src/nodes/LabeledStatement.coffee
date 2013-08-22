@@ -5,5 +5,5 @@ Identifier = require './Identifier'
 # TODO: labels need to be unique per program
 module.exports = ->
   type: 'LabeledStatement'
-  label: -> notReserved Identifier
+  label: notReserved Identifier
   body: oneOf Statement

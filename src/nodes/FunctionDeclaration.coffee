@@ -1,5 +1,5 @@
-BlockStatement = require '../nodes/BlockStatement'
-Identifier = require '../nodes/Identifier'
+BlockStatement = require './BlockStatement'
+Identifier = require './Identifier'
 {listOf, notReserved} = require '../combinators'
 
 module.exports = ->

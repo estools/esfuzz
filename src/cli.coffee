@@ -64,8 +64,8 @@ do recur = ->
     try
       fuzz parsers
     catch err
-      {ast, js} = err
-      console.error "\n\n#{err.stack}\n\n#{js}\n\n#{JSON.stringify ast}"
+      {stack, ast, js} = err
+      console.error "\n\n#{stack}\n\n#{js}\n\n#{JSON.stringify ast}"
       process.exit 1
     setImmediate recur
   else
