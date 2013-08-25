@@ -9,10 +9,12 @@ Number_ = -> oneOf [
   -> type: 'Literal', value: 0, raw: '.0'
   ->
     int = randomInt (Math.pow 2, 53) - 1
-    type: 'Literal', value: int, raw: switch randomInt 10
-      when 0 then "#{randomElement ['0', '00', '000', '0000']}#{int.toString 8}"
-      when 1 then "0#{randomElement ['x', 'X']}#{int.toString 16}"
-      else int.toString()
+    type: 'Literal', value: int
+    # TODO: re-enable when https://github.com/Constellation/escodegen/issues/123 is fixed
+    #type: 'Literal', value: int, raw: switch randomInt 10
+    #  when 0 then "#{randomElement ['0', '00', '000', '0000']}#{int.toString 8}"
+    #  when 1 then "0#{randomElement ['x', 'X']}#{int.toString 16}"
+    #  else int.toString()
   # TODO: scientific notation
 ]
 

@@ -1,5 +1,5 @@
 Identifier = require '../nodes/Identifier'
+MemberExpression = require '../nodes/MemberExpression'
 {oneOf} = require '../combinators'
 
-# TODO: also MemberExpression
-module.exports = -> oneOf [Identifier]
+module.exports = -> oneOf [Identifier, MemberExpression]
