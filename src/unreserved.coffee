@@ -1,0 +1,18 @@
+module.exports = [
+  'int'
+  'byte'
+  'char'
+  'goto'
+  'long'
+  'final'
+  'float'
+  'short'
+  'double'
+  'native'
+  'throws'
+  'boolean'
+  'abstract'
+  'volatile'
+  'transient'
+  'synchronized'
+]
