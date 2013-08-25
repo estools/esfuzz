@@ -1,11 +1,11 @@
 BlockStatement = require './BlockStatement'
 Identifier = require './Identifier'
-{listOf, maybe, notReserved} = require '../combinators'
+{listOf, maybe} = require '../combinators'
 
 module.exports = ->
   type: 'FunctionExpression'
-  id: maybe -> notReserved Identifier
-  params: listOf [(-> notReserved Identifier)], 10
+  id: maybe Identifier
+  params: listOf [Identifier]
   defaults: []
   rest: null
   body: BlockStatement()

@@ -1,8 +1,9 @@
-{randomInt} = require '../helpers'
+IdentifierName = require './IdentifierName'
+RESERVED = require '../reserved'
 
-# TODO: second code path that generates full range of characters allowed in identifier{Start,Part}
-identifierStart = identifierPart = -> String.fromCharCode 97 + randomInt 25
+notReserved = (generator) ->
+  id = generator()
+  id.name = if id.name in RESERVED then "#{id.name}_" else id.name
+  id
 
-module.exports = ->
-  type: 'Identifier'
-  name: [identifierStart(), (identifierPart() while Math.random() < 0.8)...].join ''
+module.exports = -> notReserved IdentifierName
