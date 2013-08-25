@@ -12,14 +12,14 @@ render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIF
 
 exports.fuzz = (parsers) ->
   programAST = Program()
-  program = escodegen.generate programAST, verbatim: 'raw', format: escodegen.FORMAT_MINIFY
   try
+    program = escodegen.generate programAST, verbatim: 'raw', format: escodegen.FORMAT_MINIFY
     roundTrippedPrograms = (render parser.parse program for parser in parsers)
+    targetProgram = render programAST
   catch err
     err.ast = programAST
     err.js = program
     throw err
-  targetProgram = render programAST
   for roundTrippedProgram in roundTrippedPrograms when roundTrippedProgram isnt targetProgram
     err = new RoundtripFailureError
     err.ast = programAST
