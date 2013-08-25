@@ -1,5 +1,5 @@
 RESERVED = require './reserved'
-{randomElement} = require './helpers'
+{randomBool, randomElement} = require './helpers'
 
 
 exports.listOf = listOf = (possibleGenerators) ->
@@ -13,7 +13,7 @@ exports.oneOf = oneOf = (possibleGenerators) ->
   (randomElement possibleGenerators)()
 
 exports.maybe = (generator) ->
-  if randomElement [true, false] then generator() else null
+  if randomBool() then generator() else null
 
 exports.notReserved = (generator) ->
   id = generator()
