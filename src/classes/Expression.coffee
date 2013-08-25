@@ -2,6 +2,7 @@ module.exports = expressions = []
 
 expressions.push require '../nodes/ArrayExpression'
 expressions.push require '../nodes/AssignmentExpression'
+#expressions.push require '../nodes/BinaryExpression'
 expressions.push require '../nodes/CallExpression'
 #expressions.push require '../nodes/ConditionalExpression'
 expressions.push require '../nodes/FunctionExpression'
