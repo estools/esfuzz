@@ -35,13 +35,13 @@
     "test": "test"
   },
   "dependencies": {
-    "escodegen": "0.0.24",
+    "escodegen": "git+ssh://github.com/Constellation/escodegen.git#master",
     "nopt": "~2.1.2"
   },
   "optionalDependencies": {
-    "esprima": "~1.0.3",
-    "acorn": "~0.3.1",
-    "reflect": "~0.1.3"
+    "esprima": "git+ssh://github.com/ariya/esprima.git#master",
+    "acorn": "git+ssh://github.com/marijnh/acorn.git#master",
+    "reflect": "git+ssh://github.com/zaach/reflect.js.git#master"
   },
   "devDependencies": {
     "coffee-script-redux": "2.0.0-beta5",
