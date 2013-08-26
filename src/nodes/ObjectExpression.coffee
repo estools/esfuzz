@@ -2,7 +2,7 @@ Expression = require '../classes/Expression'
 IdentifierName = require './IdentifierName'
 Number_ = require './Number'
 String_ = require './String'
-{oneOf} = require '../combinators'
+{oneOf, listOf} = require '../combinators'
 
 TYPE = 'ObjectExpression'
 leaf = (depth) -> type: TYPE, properties: []
