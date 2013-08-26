@@ -1,4 +1,4 @@
-Literal = require '../nodes/Literal'
+Literal = require './Literal'
 {oneOf} = require '../combinators'
 
 expressions = [Literal]

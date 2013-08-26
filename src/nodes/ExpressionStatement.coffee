@@ -1,5 +1,4 @@
 Expression = require '../classes/Expression'
-Literal = require './Literal'
 
 TYPE = 'ExpressionStatement'
 
