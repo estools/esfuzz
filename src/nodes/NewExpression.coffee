@@ -1,7 +1,15 @@
 Expression = require '../classes/Expression'
-{oneOf, listOf} = require '../combinators'
+Identifier = require './Identifier'
+{listOf} = require '../combinators'
 
-module.exports = ->
-  type: 'NewExpression'
-  callee: oneOf Expression
-  arguments: listOf Expression
+TYPE = 'NewExpression'
+leaf = ->
+  type: TYPE
+  callee: Identifier 0
+  arguments: []
+
+module.exports = (depth) ->
+  return leaf() unless depth-- > 0
+  type: TYPE
+  callee: Expression depth
+  arguments: (listOf [Expression]) depth

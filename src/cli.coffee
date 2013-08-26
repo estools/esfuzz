@@ -9,12 +9,14 @@ knownOpts =
   esprima: Boolean
   help: Boolean
   iterations: Number
+  'max-depth': Number
   reflect: Boolean
   reflectjs: Boolean
   version: Boolean
 
 optAliases =
   n: '--iterations'
+  d: '--max-depth'
 
 options = nopt knownOpts, optAliases, process.argv, 2
 # defaults
@@ -22,6 +24,7 @@ options.esprima ?= on
 options.acorn ?= on
 options.reflect ?= Reflect? and 'function' is typeof Reflect.parse
 options.iterations ?= 1/0
+options['max-depth'] ?= 8
 
 parsers = []
 if options.esprima then try parsers.push require 'esprima'
@@ -36,7 +39,8 @@ if options.help
   console.log "
   Usage: #{$0} OPT*
 
-  -n, --iterations NUM  use at most NUM programs
+  -n, --iterations NUM  use at most NUM programs; default: unlimited
+  -d, --max-depth NUM   create ASTs with a height no greater than NUM; default: 8
   --acorn               enable marijnh/acorn parser; default: on
   --es6                 allow ECMAScript 6 features in generated programs
   --esprima             enable ariya/esprima parser; default: on
@@ -62,7 +66,7 @@ do recur = ->
   if counter < options.iterations
     process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{++counter}"
     try
-      fuzz parsers
+      fuzz parsers, maxDepth: options['max-depth']
     catch err
       {stack, ast, js, name, message} = err
       console.error "\b\b\b\b\b\b\b\b\b\b\b\b\b#{name}: #{message}\n\n#{stack}\n\n#{js}\n\n#{JSON.stringify ast}"

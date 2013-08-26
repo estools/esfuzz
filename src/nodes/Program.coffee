@@ -1,6 +1,10 @@
 Statement = require '../classes/Statement'
 {listOfAtLeast} = require '../combinators'
 
-module.exports = ->
-  type: 'Program'
-  body: listOfAtLeast Statement, 1
+TYPE = 'Program'
+leaf = -> type: TYPE, body: []
+
+module.exports = (depth) ->
+  return leaf() unless depth-- > 0
+  type: TYPE
+  body: (listOfAtLeast 1, [Statement]) depth

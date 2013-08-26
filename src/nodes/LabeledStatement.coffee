@@ -1,9 +1,11 @@
 Statement = require '../classes/Statement'
 Identifier = require './Identifier'
-{oneOf} = require '../combinators'
 
-# TODO: labels need to be unique per program
-module.exports = ->
-  type: 'LabeledStatement'
-  label: Identifier()
-  body: oneOf Statement
+TYPE = 'LabeledStatement'
+
+# TODO: labels cannot be the same as any ancestor labels
+module.exports = (depth) ->
+  return leaf() unless depth-- > 0
+  type: TYPE
+  label: Identifier depth
+  body: Statement depth

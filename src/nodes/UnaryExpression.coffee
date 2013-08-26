@@ -1,9 +1,12 @@
 Expression = require '../classes/Expression'
 {oneOf} = require '../combinators'
-{randomElement} = require '../helpers'
 
-module.exports = ->
-  type: 'UnaryExpression'
-  operator: randomElement ['-',  '+',  '!',  '~',  'typeof',  'void',  'delete']
+OPERATORS = ['-', '+', '!', '~', 'typeof', 'void', 'delete']
+TYPE = 'UnaryExpression'
+
+module.exports = (depth) ->
+  --depth
+  type: TYPE
+  operator: oneOf OPERATORS
   prefix: true
-  argument: oneOf Expression
+  argument: Expression depth

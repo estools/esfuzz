@@ -1,16 +1,18 @@
 RESERVED = require '../reserved'
 UNRESERVED = require '../unreserved'
-{randomInt, randomElement} = require '../helpers'
+{oneOf} = require '../combinators'
+{randomInt} = require '../helpers'
+
+TYPE = 'Identifier'
+PROBLEMATIC_NAMES = [RESERVED..., UNRESERVED...]
 
 # TODO: generate full range of characters allowed in identifier{Start,Part}
 identifierStart = identifierPart = -> String.fromCharCode 97 + randomInt 25
 
-problematicNames = [RESERVED..., UNRESERVED...]
-
 module.exports = ->
   if Math.random() < 1/10
-    type: 'Identifier'
-    name: randomElement problematicNames
+    type: TYPE
+    name: oneOf PROBLEMATIC_NAMES
   else
-    type: 'Identifier'
+    type: TYPE
     name: [identifierStart(), (identifierPart() while Math.random() < 0.8)...].join ''

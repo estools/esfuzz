@@ -1,6 +1,9 @@
 Expression = require '../classes/Expression'
-{oneOf, maybe, listOf} = require '../combinators'
+{listOf} = require '../combinators'
 
-module.exports = ->
-  type: 'ArrayExpression'
-  elements: listOf [-> null, Expression...]
+TYPE = 'ArrayExpression'
+
+module.exports = (depth) ->
+  --depth
+  type: TYPE
+  elements: (listOf [-> null, Expression]) depth

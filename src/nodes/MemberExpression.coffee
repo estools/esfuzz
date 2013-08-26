@@ -2,16 +2,20 @@ Expression = require '../classes/Expression'
 IdentifierName = require './IdentifierName'
 {oneOf} = require '../combinators'
 
-DynamicMemberExpression = ->
-  type: 'MemberExpression'
-  object: oneOf Expression
-  property: oneOf Expression
+TYPE = 'MemberExpression'
+
+DynamicMemberExpression = (depth) ->
+  type: TYPE
+  object: Expression depth
+  property: Expression depth
   computed: true
 
-StaticMemberExpression = ->
-  type: 'MemberExpression'
-  object: oneOf Expression
-  property: IdentifierName()
+StaticMemberExpression = (depth) ->
+  type: TYPE
+  object: Expression depth
+  property: IdentifierName depth
   computed: false
 
-module.exports = -> oneOf [DynamicMemberExpression, StaticMemberExpression]
+module.exports = (depth) ->
+  --depth
+  (oneOf [DynamicMemberExpression, StaticMemberExpression]) depth

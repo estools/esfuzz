@@ -1,9 +1,9 @@
-{oneOf, listOf, listOfAtLeast} = require '../combinators'
-{randomInt, randomElement} = require '../helpers'
+{oneOf} = require '../combinators'
+{randomInt} = require '../helpers'
 
 # TODO: Boolean, RegExp
 
-Number_ = -> oneOf [
+Number_ = -> (oneOf [
   -> type: 'Literal', value: 0
   -> type: 'Literal', value: 0, raw: '0.'
   -> type: 'Literal', value: 0, raw: '.0'
@@ -12,11 +12,11 @@ Number_ = -> oneOf [
     type: 'Literal', value: int
     # TODO: re-enable when https://github.com/Constellation/escodegen/issues/123 is fixed
     #type: 'Literal', value: int, raw: switch randomInt 10
-    #  when 0 then "#{randomElement ['0', '00', '000', '0000']}#{int.toString 8}"
-    #  when 1 then "0#{randomElement ['x', 'X']}#{int.toString 16}"
+    #  when 0 then "#{oneOf ['0', '00', '000', '0000']}#{int.toString 8}"
+    #  when 1 then "0#{oneOf ['x', 'X']}#{int.toString 16}"
     #  else int.toString()
   # TODO: scientific notation
-]
+])()
 
 String_ = ->
   # TODO: this should be 0-65535, but only esprima supports most of these strings
@@ -25,4 +25,4 @@ String_ = ->
 
 Null = -> type: 'Literal', value: null
 
-module.exports = -> oneOf [Number_, String_, Null]
+module.exports = -> (oneOf [Number_, String_, Null])()

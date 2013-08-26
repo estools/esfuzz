@@ -10,8 +10,8 @@ class RoundtripFailureError extends Error
 
 render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIFY
 
-exports.fuzz = (parsers) ->
-  programAST = Program()
+exports.fuzz = (parsers, options) ->
+  programAST = Program options.maxDepth ? 8
   try
     program = escodegen.generate programAST, verbatim: 'raw', format: escodegen.FORMAT_MINIFY
     roundTrippedPrograms = (render parser.parse program for parser in parsers)

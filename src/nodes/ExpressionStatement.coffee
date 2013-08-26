@@ -1,6 +1,9 @@
 Expression = require '../classes/Expression'
-{oneOf} = require '../combinators'
+Literal = require './Literal'
 
-module.exports = ->
-  type: 'ExpressionStatement'
-  expression: oneOf Expression
+TYPE = 'ExpressionStatement'
+
+module.exports = (depth) ->
+  --depth
+  type: TYPE
+  expression: Expression depth

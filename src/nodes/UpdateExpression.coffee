@@ -1,9 +1,12 @@
 LHSExpression = require '../classes/LHSExpression'
 {oneOf} = require '../combinators'
-{randomBool, randomElement} = require '../helpers'
+{randomBool} = require '../helpers'
 
-module.exports = ->
-  type: 'UpdateExpression'
-  operator: randomElement ['++', '--']
-  argument: LHSExpression()
+TYPE = 'UpdateExpression'
+
+module.exports = (depth) ->
+  --depth
+  type: TYPE
+  operator: oneOf ['++', '--']
+  argument: LHSExpression depth
   prefix: randomBool()

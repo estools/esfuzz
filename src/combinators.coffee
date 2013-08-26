@@ -1,15 +1,18 @@
 {randomBool, randomElement} = require './helpers'
 
-
 exports.listOf = listOf = (possibleGenerators) ->
-  while Math.random() < 0.4
-    oneOf possibleGenerators
+  (args...) ->
+    while Math.random() < 0.5
+      (oneOf possibleGenerators) args...
 
-exports.listOfAtLeast = (possibleGenerators, min) ->
-  (oneOf possibleGenerators for _ in [1..min]).concat listOf possibleGenerators
+exports.listOfAtLeast = (min, possibleGenerators) ->
+  (args...) ->
+    pre = ((oneOf possibleGenerators) args... for _ in [1..min])
+    post = (listOf possibleGenerators) args...
+    [pre..., post...]
 
 exports.oneOf = oneOf = (possibleGenerators) ->
-  (randomElement possibleGenerators)()
+  randomElement possibleGenerators
 
 exports.maybe = (generator) ->
-  if randomBool() then generator() else null
+  if randomBool() then generator else -> null

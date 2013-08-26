@@ -2,12 +2,15 @@ BlockStatement = require './BlockStatement'
 Identifier = require './Identifier'
 {listOf} = require '../combinators'
 
-module.exports = ->
-  type: 'FunctionDeclaration'
-  id: Identifier()
-  params: listOf [Identifier]
+TYPE = 'FunctionDeclaration'
+
+module.exports = (depth) ->
+  --depth
+  type: TYPE
+  id: Identifier depth
+  params: (listOf [Identifier]) depth
   defaults: []
   rest: null
-  body: BlockStatement()
+  body: BlockStatement depth
   generator: false
   expression: false
