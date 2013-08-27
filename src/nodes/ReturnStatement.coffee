@@ -1,5 +1,5 @@
 Expression = require '../classes/Expression'
-{maybe, oneOf} = require '../combinators'
+{maybe} = require '../combinators'
 
 TYPE = 'ReturnStatement'
 
