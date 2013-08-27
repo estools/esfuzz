@@ -8,7 +8,7 @@ TYPE = 'ForStatement'
 module.exports = (depth) ->
   --depth
   type: TYPE
-  init: (oneOf [VariableDeclaration, Expression, -> null]) depth
+  init: (maybe (oneOf [VariableDeclaration, Expression])) depth
   test: (maybe Expression) depth
   update: (maybe Expression) depth
   body: Statement depth
