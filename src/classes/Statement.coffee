@@ -8,6 +8,7 @@ module.exports = (depth, args...) ->
 
 statements.push require '../nodes/BlockStatement'
 statements.push require '../nodes/DebuggerStatement'
+statements.push require '../nodes/DoWhileStatement'
 statements.push require '../nodes/ExpressionStatement'
 statements.push require '../nodes/ForInStatement'
 statements.push require '../nodes/FunctionDeclaration'
