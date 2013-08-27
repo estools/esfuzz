@@ -13,6 +13,7 @@ knownOpts =
   reflect: Boolean
   reflectjs: Boolean
   version: Boolean
+  zeparser: Boolean
 
 optAliases =
   n: '--iterations'
@@ -31,6 +32,7 @@ if options.esprima then try parsers.push require 'esprima'
 if options.acorn then try parsers.push require 'acorn'
 if options.reflectjs then try parsers.push require 'reflect'
 if options.reflect then try parsers.push Reflect
+if options.zeparser then try parsers.push (require 'zeparser').ZeParser
 
 
 if options.help

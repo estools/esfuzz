@@ -41,7 +41,8 @@
   "optionalDependencies": {
     "esprima": "git+ssh://github.com/ariya/esprima.git#master",
     "acorn": "git+ssh://github.com/marijnh/acorn.git#master",
-    "reflect": "git+ssh://github.com/zaach/reflect.js.git#master"
+    "reflect": "git+ssh://github.com/zaach/reflect.js.git#master",
+    "zeparser": "git+ssh://github.com/qfox/ZeParser.git#master"
   },
   "devDependencies": {
     "coffee-script-redux": "2.0.0-beta5",
