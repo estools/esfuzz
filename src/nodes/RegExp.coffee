@@ -55,6 +55,13 @@ RegExpSource = (depth) ->
   return '' unless depth--
   (oneOf [Alternation, Grouping, CharacterClass, Repetition, Sequence]) depth
 
+
+genSafeRegExp = ->
+  try
+    new RegExp RegExpSource 6
+  catch e
+    genSafeRegExp()
+
 module.exports = ->
   type: TYPE
-  value: new RegExp RegExpSource 6
+  value: genSafeRegExp()
