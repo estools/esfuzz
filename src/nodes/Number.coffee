@@ -1,5 +1,5 @@
 {oneOf} = require '../combinators'
-{randomInt} = require '../helpers'
+{randomInt} = require '../random'
 
 TYPE = 'Literal'
 

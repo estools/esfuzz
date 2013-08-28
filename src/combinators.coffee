@@ -1,4 +1,4 @@
-{randomBool, randomElement} = require './helpers'
+{randomBool, randomElement} = require './random'
 
 exports.listOf = listOf = (possibleGenerators) ->
   (args...) ->

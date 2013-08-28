@@ -1,7 +1,7 @@
 RESERVED = require '../reserved'
 UNRESERVED = require '../unreserved'
 {oneOf} = require '../combinators'
-{randomInt} = require '../helpers'
+{randomInt} = require '../random'
 
 TYPE = 'Identifier'
 PROBLEMATIC_NAMES = [RESERVED..., UNRESERVED...]

@@ -1,6 +1,6 @@
 LHSExpression = require '../classes/LHSExpression'
 {oneOf} = require '../combinators'
-{randomBool} = require '../helpers'
+{randomBool} = require '../random'
 
 TYPE = 'UpdateExpression'
 
