@@ -56,8 +56,5 @@ RegExpSource = (depth) ->
   (oneOf [Alternation, Grouping, CharacterClass, Repetition, Sequence]) depth
 
 module.exports = ->
-  source = RegExpSource 6
-  # TODO: remove once https://github.com/marijnh/acorn/issues/55 is fixed
-  source = source.replace /^=/, '0'
   type: TYPE
-  value: new RegExp source
+  value: new RegExp RegExpSource 6
