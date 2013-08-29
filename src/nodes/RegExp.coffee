@@ -84,10 +84,8 @@ RegExpSource = (depth) ->
 
 genSafeRegExp = ->
   try
-    source = RegExpSource 6
-    new RegExp source
+    new RegExp RegExpSource 6
   catch e
-    console.dir source
     genSafeRegExp()
 
 module.exports = ->
