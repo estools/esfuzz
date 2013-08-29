@@ -1,4 +1,4 @@
-{oneOf, listOf} = require '../combinators'
+{oneOf, listOf, listOfExactly} = require '../combinators'
 {randomInt} = require '../random'
 
 TYPE = 'Literal'
@@ -27,29 +27,55 @@ Alternation = (depth) ->
   return '' unless depth--
   ((listOf [Grouping, CharacterClass, Repetition, Sequence]) depth).join '|'
 
+Hex = do ->
+  chars = '0123456789abcdefABCDEF'.split ''
+  -> oneOf chars
+
 Character = ->
-  ch = ''
-  ch = printableAscii().replace /[[(){?*+|\\$^]/g, '' until ch
+  (oneOf [
+    ->
+      loop
+        ch = printableAscii()
+        return ch unless ch in ['[', '(', ')', '{', '?', '*', '+', '|', '\\', '$', '^']
+      return
+    -> "\\u#{(listOfExactly 4, [Hex])().join ''}"
+    -> "\\x#{(listOfExactly 2, [Hex])().join ''}"
+    ->
+      loop
+        ch = printableAscii()
+        return "\\#{ch}" unless ch in ['u', 'x', 'b', 'B', 'c', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+      return
+  ])()
+
+Boundary = -> oneOf ['^', '$', '\\b']
+
+CharacterClassCharacter = ->
+  ch = '-'
+  while ch in ['-', ']']
+    ch = (oneOf [Character, -> oneOf ['[', '(', ')', '{', '?', '*', '+', '|', '$']])()
   ch
+
+CharacterClassRange = ->
+  a = CharacterClassCharacter()
+  b = CharacterClassCharacter()
+  [left, right] = if (charVal a) < (charVal b) then [a, b] else [b, a]
+  "#{left}-#{right}"
 
 CharacterClass = (depth) ->
   return '[]' unless depth--
-  source = (listOf [printableAscii])().join ''
-  source = source.replace /\\/g, '\\\\'
-  source = source.replace /]/g, '\\]'
-  source = source.replace /(?:^|[^\\])(?:\\\\)*?(\\u[0-9a-fA-F]{4}|\\x[0-9a-fA-F]{2}|\\.|.)-(\\u[0-9a-fA-F]{4}|\\x[0-9a-fA-F]{2}|\\.|.)/g, (match, a, b) ->
-    if (charVal a) < (charVal b) then match else "#{b}-#{a}"
-  "[#{source}]"
+  source = (listOf [CharacterClassCharacter, CharacterClassRange])().join ''
+  source = source.replace /\\$/g, '\\a'
+  "[#{oneOf ['^', '-', '']}#{source}#{oneOf ['-', '']}]"
 
 Grouping = (depth) ->
   return '()' unless depth--
-  "(#{(RegExpSource) depth})"
+  "(#{oneOf ['?:', '?!', '?=', '']}#{RegExpSource depth})"
 
 Repetition = (depth) ->
   return '' unless depth--
   "#{(oneOf [Grouping, CharacterClass, Character]) depth}#{oneOf ['?', '+', '*', '*?', '+?']}"
 
-Sequence = -> (listOf [Character])().join ''
+Sequence = -> (listOf [Character, Boundary])().join ''
 
 RegExpSource = (depth) ->
   return '' unless depth--
@@ -58,8 +84,10 @@ RegExpSource = (depth) ->
 
 genSafeRegExp = ->
   try
-    new RegExp RegExpSource 6
+    source = RegExpSource 6
+    new RegExp source
   catch e
+    console.dir source
     genSafeRegExp()
 
 module.exports = ->
