@@ -4,10 +4,7 @@ IdentifierName = require './IdentifierName'
 Identifier = require './Identifier'
 Number_ = require './Number'
 String_ = require './String'
-{oneOf, listOf} = require '../combinators'
-
-TYPE = 'ObjectExpression'
-leaf = (depth) -> type: TYPE, properties: []
+{construct, oneOf, listOf} = require '../combinators'
 
 nubBy = (xs, eq) ->
   x for x in xs when not (y for y in xs when eq x, y).length
@@ -44,7 +41,12 @@ Setter = (depth) ->
   key: Key depth
   value: fn
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  properties: nubBy ((listOf [Property, Getter, Setter]) depth), eq
+class ObjectExpression
+  type: @name
+  properties: []
+  constructor: (depth) ->
+    --depth
+    if depth > 0
+      @properties = nubBy ((listOf [Property, Getter, Setter]) depth), eq
+
+module.exports = construct ObjectExpression

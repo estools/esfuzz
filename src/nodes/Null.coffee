@@ -1,1 +1,5 @@
-module.exports = -> type: 'Literal', value: null
+class Null
+  type: 'Literal'
+  value: null
+
+module.exports = -> new Null

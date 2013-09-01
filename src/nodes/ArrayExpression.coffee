@@ -1,9 +1,10 @@
 Expression = require '../classes/Expression'
-{maybe, listOf} = require '../combinators'
+{construct, maybe, listOf} = require '../combinators'
 
-TYPE = 'ArrayExpression'
+class ArrayExpression
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @elements = (listOf [maybe Expression]) depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  elements: (listOf [maybe Expression]) depth
+module.exports = construct ArrayExpression

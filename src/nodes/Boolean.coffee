@@ -1,3 +1,9 @@
-{oneOf} = require '../combinators'
+{randomBool} = require '../random'
+{construct} = require '../combinators'
 
-module.exports = -> type: 'Literal', value: oneOf [true, false]
+class Boolean
+  type: 'Literal'
+  constructor: ->
+    @value = randomBool()
+
+module.exports = construct Boolean

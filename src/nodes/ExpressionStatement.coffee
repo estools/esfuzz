@@ -1,8 +1,10 @@
 Expression = require '../classes/Expression'
+{construct} = require '../combinators'
 
-TYPE = 'ExpressionStatement'
+class ExpressionStatement
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @expression = Expression depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  expression: Expression depth
+module.exports = construct ExpressionStatement

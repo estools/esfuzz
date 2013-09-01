@@ -4,7 +4,7 @@ Literal = require './Literal'
 expressions = [Literal]
 module.exports = (depth, args...) ->
   return Literal 0, args... unless depth > 0
-  (oneOf expressions) depth, args...
+  (oneOf expressions) arguments...
 
 expressions.push require '../nodes/ArrayExpression'
 expressions.push require '../nodes/AssignmentExpression'

@@ -1,16 +1,18 @@
 Expression = require '../classes/Expression'
 Identifier = require './Identifier'
-{maybe, listOfAtLeast} = require '../combinators'
+{construct, maybe, listOfAtLeast} = require '../combinators'
 
-TYPE = 'VariableDeclaration'
+class VariableDeclarator
+  type: @name
+  constructor: (depth) ->
+    @id = Identifier depth # TODO: use Pattern instead
+    @init = (maybe Expression) depth
 
-VariableDeclarator = (depth) ->
-  type: 'VariableDeclarator'
-  id: Identifier depth # TODO: use Pattern instead
-  init: (maybe Expression) depth
+class VariableDeclaration
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @declarations = (listOfAtLeast 1, [construct VariableDeclarator]) depth
+    @kind = 'var' # TODO: let/const
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  declarations: (listOfAtLeast 1, [VariableDeclarator]) depth
-  kind: 'var' # TODO: let/const
+module.exports = construct VariableDeclaration

@@ -1,10 +1,12 @@
 Statement = require '../classes/Statement'
-{listOfAtLeast} = require '../combinators'
+{construct, listOfAtLeast} = require '../combinators'
 
-TYPE = 'Program'
-leaf = -> type: TYPE, body: []
+class Program
+  type: @name
+  body: []
+  constructor: (depth) ->
+    --depth
+    if depth > 0
+      @body = (listOfAtLeast 1, [Statement]) depth
 
-module.exports = (depth) ->
-  return leaf() unless depth-- > 0
-  type: TYPE
-  body: (listOfAtLeast 1, [Statement]) depth
+module.exports = construct Program

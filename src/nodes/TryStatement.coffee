@@ -1,29 +1,26 @@
 BlockStatement = require './BlockStatement'
 Identifier = require './Identifier'
-{oneOf, maybe} = require '../combinators'
+{construct, maybe} = require '../combinators'
+{randomBool} = require '../random'
 
-TYPE = 'TryStatement'
-
-CatchClause = (depth) ->
+class CatchClause
   type: 'CatchClause'
-  param: Identifier depth
   guard: null
-  body: BlockStatement depth
+  constructor: (depth) ->
+    @param = Identifier depth
+    @body = BlockStatement depth
 
-TryStatementMaybeCatch = (depth) ->
-  type: TYPE
-  block: BlockStatement depth
-  handler: (maybe CatchClause) depth
+class TryStatement
+  type: @name
   guardedHandlers: []
-  finalizer: BlockStatement depth
+  constructor: (depth) ->
+    --depth
+    @block = BlockStatement depth
+    if randomBool()
+      @handler = (maybe construct CatchClause) depth
+      @finalizer = BlockStatement depth
+    else
+      @handler = (construct CatchClause) depth
+      @finalizer = (maybe BlockStatement) depth
 
-TryStatementMaybeFinally = (depth) ->
-  type: TYPE
-  block: BlockStatement depth
-  handler: CatchClause depth
-  guardedHandlers: []
-  finalizer: (maybe BlockStatement) depth
-
-module.exports = (depth) ->
-  --depth
-  (oneOf [TryStatementMaybeCatch, TryStatementMaybeFinally]) depth
+module.exports = construct TryStatement

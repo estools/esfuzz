@@ -1,12 +1,15 @@
 Expression = require '../classes/Expression'
-{oneOf} = require '../combinators'
+{randomElement} = require '../random'
+{construct} = require '../combinators'
 
 OPERATORS = ['==', '!=', '===', '!==', '<', '<=', '>', '>=', '<<', '>>', '>>>', '+', '-', '*', '/', '%', '|', '^', 'in', 'instanceof']
-TYPE = 'BinaryExpression'
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  operator: oneOf OPERATORS
-  left: Expression depth
-  right: Expression depth
+class BinaryExpression
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @operator = randomElement OPERATORS
+    @left = Expression depth
+    @right = Expression depth
+
+module.exports = construct BinaryExpression

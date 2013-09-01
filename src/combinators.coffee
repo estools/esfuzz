@@ -1,7 +1,8 @@
 {randomBool, randomElement} = require './random'
 
 exports.oneOf = oneOf = (possibleGenerators) ->
-  randomElement possibleGenerators
+  (args...) ->
+    (randomElement possibleGenerators) args...
 
 exports.listOf = listOf = (possibleGenerators) ->
   (args...) ->
@@ -10,7 +11,7 @@ exports.listOf = listOf = (possibleGenerators) ->
 
 exports.listOfExactly = listOfExactly = (n, possibleGenerators) ->
   (args...) ->
-    ((oneOf possibleGenerators) args... for _ in [1..n])
+    ((oneOf possibleGenerators) args... for in [1..n])
 
 exports.listOfAtLeast = (min, possibleGenerators) ->
   (args...) ->
@@ -20,3 +21,5 @@ exports.listOfAtLeast = (min, possibleGenerators) ->
 
 exports.maybe = (generator) ->
   if randomBool() then generator else -> null
+
+exports.construct = (C) -> -> new C arguments...

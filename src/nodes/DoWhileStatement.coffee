@@ -1,10 +1,12 @@
 Expression = require '../classes/Expression'
 Statement = require '../classes/Statement'
+{construct} = require '../combinators'
 
-TYPE = 'DoWhileStatement'
+class DoWhileStatement
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @body = Statement depth
+    @test = Expression depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  body: Statement depth
-  test: Expression depth
+module.exports = construct DoWhileStatement

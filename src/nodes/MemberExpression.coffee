@@ -1,21 +1,25 @@
 Expression = require '../classes/Expression'
 IdentifierName = require './IdentifierName'
-{oneOf} = require '../combinators'
+{construct, oneOf} = require '../combinators'
 
-TYPE = 'MemberExpression'
+class MemberExpression
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @object = Expression depth
 
-DynamicMemberExpression = (depth) ->
-  type: TYPE
-  object: Expression depth
-  property: Expression depth
-  computed: true
+class DynamicMemberExpression extends MemberExpression
+  constructor: (depth) ->
+    --depth
+    MemberExpression.apply this, arguments
+    @property = Expression depth
+    @computed = true
 
-StaticMemberExpression = (depth) ->
-  type: TYPE
-  object: Expression depth
-  property: IdentifierName depth
-  computed: false
+class StaticMemberExpression extends MemberExpression
+  constructor: (depth) ->
+    --depth
+    MemberExpression.apply this, arguments
+    @property = IdentifierName depth
+    @computed = false
 
-module.exports = (depth) ->
-  --depth
-  (oneOf [DynamicMemberExpression, StaticMemberExpression]) depth
+module.exports = oneOf [(construct DynamicMemberExpression), construct StaticMemberExpression]

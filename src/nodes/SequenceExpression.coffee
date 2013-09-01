@@ -1,9 +1,10 @@
 Expression = require '../classes/Expression'
-{listOfAtLeast} = require '../combinators'
+{construct, listOfAtLeast} = require '../combinators'
 
-TYPE = 'SequenceExpression'
+class SequenceExpression
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @expressions = (listOfAtLeast 2, [Expression]) depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  expressions: (listOfAtLeast 2, [Expression]) depth
+module.exports = construct SequenceExpression

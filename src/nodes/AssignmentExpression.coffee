@@ -1,19 +1,21 @@
 Expression = require '../classes/Expression'
 LHSExpression = require '../classes/LHSExpression'
 Identifier = require './Identifier'
-{oneOf} = require '../combinators'
+{construct} = require '../combinators'
+{randomElement} = require '../random'
 
 OPERATORS = ['=', '+=', '-=', '*=', '/=', '%=', '<<=', '>>=', '>>>=', '|=', '^=', '&=']
-TYPE = 'AssignmentExpression'
-leaf = ->
-  type: TYPE
-  operator: oneOf OPERATORS
-  left: Identifier 0
-  right: Expression 0
 
-module.exports = (depth) ->
-  return leaf() unless depth-- > 0
-  type: TYPE
-  operator: oneOf OPERATORS
-  left: LHSExpression depth
-  right: Expression depth
+class AssignmentExpression
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @operator = randomElement OPERATORS
+    if depth > 0
+      @left = LHSExpression depth
+      @right = Expression depth
+    else
+      @left = Identifier 0
+      @right = Expression 0
+
+module.exports = construct AssignmentExpression

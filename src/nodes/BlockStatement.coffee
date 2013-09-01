@@ -1,10 +1,12 @@
 Statement = require '../classes/Statement'
-{listOf} = require '../combinators'
+{construct, listOf} = require '../combinators'
 
-TYPE = 'BlockStatement'
-leaf = -> type: TYPE, body: []
+class BlockStatement
+  type: @name
+  body: []
+  constructor: (depth) ->
+    --depth
+    if depth > 0
+      @body = (listOf [Statement]) depth
 
-module.exports = (depth) ->
-  return leaf() unless depth-- > 0
-  type: TYPE
-  body: (listOf [Statement]) depth
+module.exports = construct BlockStatement

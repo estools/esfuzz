@@ -1,12 +1,15 @@
 Expression = require '../classes/Expression'
-{oneOf} = require '../combinators'
+{randomElement} = require '../random'
+{construct} = require '../combinators'
 
 OPERATORS = ['||', '&&']
-TYPE = 'LogicalExpression'
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  operator: oneOf OPERATORS
-  left: Expression depth
-  right: Expression depth
+class LogicalExpression
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @operator = randomElement OPERATORS
+    @left = Expression depth
+    @right = Expression depth
+
+module.exports = construct LogicalExpression

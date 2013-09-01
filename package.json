@@ -44,7 +44,7 @@
     "reflect": "git+ssh://github.com/zaach/reflect.js.git#master"
   },
   "devDependencies": {
-    "coffee-script-redux": "2.0.0-beta5",
+    "coffee-script-redux": "2.0.0-beta7",
     "commonjs-everywhere": "0.9.x",
     "mocha": "~1.8.1",
     "semver": "~1.1.4"

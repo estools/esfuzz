@@ -1,7 +1,5 @@
 {oneOf, listOf, listOfExactly} = require '../combinators'
-{randomInt} = require '../random'
-
-TYPE = 'Literal'
+{randomInt, randomElement} = require '../random'
 
 printableAscii = -> String.fromCharCode 32 + randomInt 94
 
@@ -29,7 +27,7 @@ Alternation = (depth) ->
 
 Hex = do ->
   chars = '0123456789abcdefABCDEF'.split ''
-  -> oneOf chars
+  -> randomElement chars
 
 Character = ->
   (oneOf [
@@ -47,12 +45,12 @@ Character = ->
       return
   ])()
 
-Boundary = -> oneOf ['^', '$', '\\b']
+Boundary = -> randomElement ['^', '$', '\\b']
 
 CharacterClassCharacter = ->
   ch = '-'
   while ch in ['-', ']']
-    ch = (oneOf [Character, -> oneOf ['[', '(', ')', '{', '?', '*', '+', '|', '$']])()
+    ch = (oneOf [Character, -> randomElement ['[', '(', ')', '{', '?', '*', '+', '|', '$']])()
   ch
 
 CharacterClassRange = ->
@@ -65,15 +63,15 @@ CharacterClass = (depth) ->
   return '[]' unless depth--
   source = (listOf [CharacterClassCharacter, CharacterClassRange])().join ''
   source = source.replace /\\$/g, '\\a'
-  "[#{oneOf ['^', '-', '']}#{source}#{oneOf ['-', '']}]"
+  "[#{randomElement ['^', '-', '']}#{source}#{randomElement ['-', '']}]"
 
 Grouping = (depth) ->
   return '()' unless depth--
-  "(#{oneOf ['?:', '?!', '?=', '']}#{RegExpSource depth})"
+  "(#{randomeElement ['?:', '?!', '?=', '']}#{RegExpSource depth})"
 
 Repetition = (depth) ->
   return '' unless depth--
-  "#{(oneOf [Grouping, CharacterClass, Character]) depth}#{oneOf ['?', '+', '*', '*?', '+?']}"
+  "#{(oneOf [Grouping, CharacterClass, Character]) depth}#{randomElement ['?', '+', '*', '*?', '+?']}"
 
 Sequence = -> (listOf [Character, Boundary])().join ''
 
@@ -88,6 +86,9 @@ genSafeRegExp = ->
   catch e
     genSafeRegExp()
 
-module.exports = ->
-  type: TYPE
-  value: genSafeRegExp()
+class RegExp_
+  type: 'Literal'
+  constructor: (depth) ->
+    @value = genSafeRegExp()
+
+module.exports = -> new RegExp_ arguments...

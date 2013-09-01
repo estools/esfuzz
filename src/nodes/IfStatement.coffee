@@ -1,12 +1,13 @@
 Statement = require '../classes/Statement'
 Expression = require '../classes/Expression'
-{maybe} = require '../combinators'
+{construct, maybe} = require '../combinators'
 
-TYPE = 'IfStatement'
+class IfStatement
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @test = Expression depth
+    @consequent = Statement depth
+    @alternate = (maybe Statement) depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  test: Expression depth
-  consequent: Statement depth
-  alternate: (maybe Statement) depth
+module.exports = construct IfStatement

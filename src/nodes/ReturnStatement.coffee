@@ -1,10 +1,11 @@
 Expression = require '../classes/Expression'
-{maybe} = require '../combinators'
-
-TYPE = 'ReturnStatement'
+{construct, maybe} = require '../combinators'
 
 # TODO: return can only exist within functions
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  argument: (maybe Expression) depth
+class ReturnStatement
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @argument = (maybe Expression) depth
+
+module.exports = construct ReturnStatement

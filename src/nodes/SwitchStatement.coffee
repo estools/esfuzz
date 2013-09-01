@@ -1,29 +1,31 @@
 Statement = require '../classes/Statement'
 Expression = require '../classes/Expression'
-{oneOf, listOf, listOfAtLeast} = require '../combinators'
+{construct, oneOf, listOf, listOfAtLeast} = require '../combinators'
 
-TYPE = 'SwitchStatement'
-leaf = ->
-  type: TYPE
-  discriminant: Expression 0
-  cases: []
-  lexical: false
-
-SwitchCase = (depth) ->
+class SwitchCase
   type: 'SwitchCase'
-  test: Expression depth
-  consequent: (listOfAtLeast 1, [Statement]) depth
+  constructor: (depth) ->
+    @test = Expression depth
+    @consequent = (listOfAtLeast 1, [Statement]) depth
 
 # TODO: SwitchCaseFallthrough
 
-SwitchCaseDefault = (depth) ->
+class SwitchCaseDefault
   type: 'SwitchCase'
   test: null
-  consequent: (listOfAtLeast 1, [Statement]) depth
+  constructor: (depth) ->
+    @consequent = (listOfAtLeast 1, [Statement]) depth
 
-module.exports = (depth) ->
-  return leaf() unless depth-- > 0
-  type: TYPE
-  discriminant: Expression depth
-  cases: ((listOf [SwitchCase]) depth).concat (oneOf [SwitchCaseDefault, -> []]) depth
+class SwitchStatement
+  type: @name
+  cases: []
   lexical: false
+  constructor: (depth) ->
+    --depth
+    if depth > 0
+      @discriminant = Expression depth
+      @cases = ((listOf [construct SwitchCase]) depth).concat (oneOf [(construct SwitchCaseDefault), -> []]) depth
+    else
+      @discriminant = Expression 0
+
+module.exports = construct SwitchStatement

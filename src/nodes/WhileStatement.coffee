@@ -1,10 +1,12 @@
 Expression = require '../classes/Expression'
 Statement = require '../classes/Statement'
+{construct} = require '../combinators'
 
-TYPE = 'WhileStatement'
+class WhileStatement
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @test = Expression depth
+    @body = Statement depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  test: Expression depth
-  body: Statement depth
+module.exports = construct WhileStatement

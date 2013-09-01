@@ -1,11 +1,13 @@
 Identifier = require './Identifier'
-{maybe} = require '../combinators'
-
-TYPE = 'BreakStatement'
-leaf = -> type: TYPE, label: null
+{construct, maybe} = require '../combinators'
 
 # TODO: break can only exist in loops
-module.exports = (depth) ->
-  return leaf() unless depth-- > 0
-  type: TYPE
-  label: (maybe Identifier) depth
+class BreakStatement
+  type: @name
+  label: null
+  constructor: (depth) ->
+    --depth
+    if depth > 0
+      @label = (maybe Identifier) depth
+
+module.exports = construct BreakStatement

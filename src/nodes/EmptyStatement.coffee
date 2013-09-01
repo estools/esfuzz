@@ -1,1 +1,4 @@
-module.exports = -> type: 'EmptyStatement'
+class EmptyStatement
+  type: @name
+
+module.exports = -> new EmptyStatement

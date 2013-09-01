@@ -1,1 +1,4 @@
-module.exports = -> type: 'DebuggerStatement'
+class DebuggerStatement
+  type: @name
+
+module.exports = -> new DebuggerStatement

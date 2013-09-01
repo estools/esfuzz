@@ -1,10 +1,12 @@
 Statement = require '../classes/Statement'
 Expression = require '../classes/Expression'
+{construct} = require '../combinators'
 
-TYPE = 'WithStatement'
+class WithStatement
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @object = Expression depth
+    @body = Statement depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  object: Expression depth
-  body: Statement depth
+module.exports = construct WithStatement

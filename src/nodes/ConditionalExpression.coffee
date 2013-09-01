@@ -1,10 +1,12 @@
 Expression = require '../classes/Expression'
+{construct} = require '../combinators'
 
-TYPE = 'ConditionalExpression'
+class ConditionalExpression
+  type: @name
+  constructor: (depth) ->
+    --depth
+    @test = Expression depth
+    @consequent = Expression depth
+    @alternate = Expression depth
 
-module.exports = (depth) ->
-  --depth
-  type: TYPE
-  test: Expression depth
-  consequent: Expression depth
-  alternate: Expression depth
+module.exports = construct ConditionalExpression
