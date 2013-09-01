@@ -16,10 +16,9 @@ class Number_ extends Node
       else
         int = randomInt (Math.pow 2, 53) - 1
         @value = int
-        @raw = switch randomInt 10
-          when 0 then "#{randomElement ['0', '00', '000', '0000']}#{int.toString 8}"
-          when 1 then "0#{randomElement ['x', 'X']}#{int.toString 16}"
-          else int.toString()
+        switch randomInt 10
+          when 0 then @raw = "#{randomElement ['0', '00', '000', '0000']}#{int.toString 8}"
+          when 1 then @raw = "0#{randomElement ['x', 'X']}#{int.toString 16}"
       # TODO: scientific notation
 
 module.exports = -> new Number_
