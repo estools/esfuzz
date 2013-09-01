@@ -1,6 +1,7 @@
+Node = require '../node'
 {randomInt, randomElement} = require '../random'
 
-class Number_
+class Number_ extends Node
   type: 'Literal'
   constructor: ->
     switch randomInt 6

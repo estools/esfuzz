@@ -1,3 +1,4 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 LHSExpression = require '../classes/LHSExpression'
 Identifier = require './Identifier'
@@ -6,7 +7,7 @@ Identifier = require './Identifier'
 
 OPERATORS = ['=', '+=', '-=', '*=', '/=', '%=', '<<=', '>>=', '>>>=', '|=', '^=', '&=']
 
-class AssignmentExpression
+class AssignmentExpression extends Node
   type: @name
   constructor: (depth) ->
     --depth

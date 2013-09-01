@@ -1,3 +1,4 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 FunctionExpression = require './FunctionExpression'
 IdentifierName = require './IdentifierName'
@@ -41,7 +42,7 @@ Setter = (depth) ->
   key: Key depth
   value: fn
 
-class ObjectExpression
+class ObjectExpression extends Node
   type: @name
   properties: []
   constructor: (depth) ->

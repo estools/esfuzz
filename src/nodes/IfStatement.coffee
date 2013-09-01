@@ -1,8 +1,9 @@
+Node = require '../node'
 Statement = require '../classes/Statement'
 Expression = require '../classes/Expression'
 {construct, maybe} = require '../combinators'
 
-class IfStatement
+class IfStatement extends Node
   type: @name
   constructor: (depth) ->
     --depth

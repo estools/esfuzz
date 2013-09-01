@@ -1,4 +1,6 @@
-class Null
+Node = require '../node'
+
+class Null extends Node
   type: 'Literal'
   value: null
 

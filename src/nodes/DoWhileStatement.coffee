@@ -1,8 +1,9 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 Statement = require '../classes/Statement'
 {construct} = require '../combinators'
 
-class DoWhileStatement
+class DoWhileStatement extends Node
   type: @name
   constructor: (depth) ->
     --depth

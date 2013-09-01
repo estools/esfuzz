@@ -1,10 +1,11 @@
+Node = require '../node'
 LHSExpression = require '../classes/LHSExpression'
 {construct} = require '../combinators'
 {randomBool, randomElement} = require '../random'
 
 OPERATORS = ['++', '--']
 
-class UpdateExpression
+class UpdateExpression extends Node
   type: @name
   constructor: (depth) ->
     --depth

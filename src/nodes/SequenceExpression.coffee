@@ -1,7 +1,8 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 {construct, listOfAtLeast} = require '../combinators'
 
-class SequenceExpression
+class SequenceExpression extends Node
   type: @name
   constructor: (depth) ->
     --depth

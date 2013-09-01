@@ -1,3 +1,4 @@
+Node = require '../node'
 {oneOf, listOf, listOfExactly} = require '../combinators'
 {randomInt, randomElement} = require '../random'
 
@@ -80,7 +81,7 @@ RegExpSource = (depth) ->
   (oneOf [Alternation, Grouping, CharacterClass, Repetition, Sequence]) depth
 
 
-class RegExp_
+class RegExp_ extends Node
   type: 'Literal'
   constructor: (depth) ->
     @value = new RegExp RegExpSource 8

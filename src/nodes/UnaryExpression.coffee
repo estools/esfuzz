@@ -1,10 +1,11 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 {construct} = require '../combinators'
 {randomElement} = require '../random'
 
 OPERATORS = ['-', '+', '!', '~', 'typeof', 'void', 'delete']
 
-class UnaryExpression
+class UnaryExpression extends Node
   type: @name
   prefix: true
   constructor: (depth) ->

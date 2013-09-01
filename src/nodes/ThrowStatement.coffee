@@ -1,7 +1,8 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 {construct} = require '../combinators'
 
-class ThrowStatement
+class ThrowStatement extends Node
   type: @name
   constructor: (depth) ->
     --depth

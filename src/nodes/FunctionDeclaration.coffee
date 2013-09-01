@@ -1,8 +1,9 @@
+Node = require '../node'
 BlockStatement = require './BlockStatement'
 Identifier = require './Identifier'
 {construct, listOf} = require '../combinators'
 
-class FunctionDeclaration
+class FunctionDeclaration extends Node
   type: @name
   defaults: []
   rest: null

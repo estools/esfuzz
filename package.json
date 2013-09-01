@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "escodegen": "git+ssh://github.com/Constellation/escodegen.git#master",
-    "nopt": "~2.1.2"
+    "nopt": "~2.1.2",
+    "estraverse": "~1.3.0"
   },
   "optionalDependencies": {
     "esprima": "git+ssh://github.com/ariya/esprima.git#master",

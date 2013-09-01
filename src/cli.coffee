@@ -69,7 +69,7 @@ do recur = ->
       fuzz parsers, maxDepth: options['max-depth']
     catch err
       {stack, ast, js, name, message} = err
-      console.error "\b\b\b\b\b\b\b\b\b\b\b\b\b#{name}: #{message}\n\n#{stack}\n\n#{js}\n\n#{JSON.stringify ast}"
+      console.error "\b\b\b\b\b\b\b\b\b\b\b\b\b#{name}: #{message}\n\n#{stack}\n\n#{js}\n\n#{ast}"
       process.exit 1
     setImmediate recur
   else

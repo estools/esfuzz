@@ -1,10 +1,11 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 {randomElement} = require '../random'
 {construct} = require '../combinators'
 
 OPERATORS = ['||', '&&']
 
-class LogicalExpression
+class LogicalExpression extends Node
   type: @name
   constructor: (depth) ->
     --depth

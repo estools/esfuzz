@@ -1,8 +1,9 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 IdentifierName = require './IdentifierName'
 {construct, oneOf} = require '../combinators'
 
-class MemberExpression
+class MemberExpression extends Node
   type: @name
   constructor: (depth) ->
     --depth

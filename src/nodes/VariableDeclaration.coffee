@@ -1,14 +1,15 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 Identifier = require './Identifier'
 {construct, maybe, listOfAtLeast} = require '../combinators'
 
-class VariableDeclarator
+class VariableDeclarator extends Node
   type: @name
   constructor: (depth) ->
     @id = Identifier depth # TODO: use Pattern instead
     @init = (maybe Expression) depth
 
-class VariableDeclaration
+class VariableDeclaration extends Node
   type: @name
   constructor: (depth) ->
     --depth

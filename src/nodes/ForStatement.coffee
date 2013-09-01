@@ -1,9 +1,10 @@
+Node = require '../node'
 Expression = require '../classes/Expression'
 Statement = require '../classes/Statement'
 VariableDeclaration = require './VariableDeclaration'
 {construct, oneOf, maybe} = require '../combinators'
 
-class ForStatement
+class ForStatement extends Node
   type: @name
   constructor: (depth) ->
     --depth

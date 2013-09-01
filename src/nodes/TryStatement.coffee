@@ -1,16 +1,17 @@
+Node = require '../node'
 BlockStatement = require './BlockStatement'
 Identifier = require './Identifier'
 {construct, maybe} = require '../combinators'
 {randomBool} = require '../random'
 
-class CatchClause
+class CatchClause extends Node
   type: 'CatchClause'
   guard: null
   constructor: (depth) ->
     @param = Identifier depth
     @body = BlockStatement depth
 
-class TryStatement
+class TryStatement extends Node
   type: @name
   guardedHandlers: []
   constructor: (depth) ->

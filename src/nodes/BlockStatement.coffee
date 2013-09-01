@@ -1,7 +1,8 @@
+Node = require '../node'
 Statement = require '../classes/Statement'
 {construct, listOf} = require '../combinators'
 
-class BlockStatement
+class BlockStatement extends Node
   type: @name
   body: []
   constructor: (depth) ->

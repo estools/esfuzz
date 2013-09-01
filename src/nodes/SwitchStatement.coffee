@@ -1,8 +1,9 @@
+Node = require '../node'
 Statement = require '../classes/Statement'
 Expression = require '../classes/Expression'
 {construct, oneOf, listOf, listOfAtLeast} = require '../combinators'
 
-class SwitchCase
+class SwitchCase extends Node
   type: 'SwitchCase'
   constructor: (depth) ->
     @test = Expression depth
@@ -10,13 +11,13 @@ class SwitchCase
 
 # TODO: SwitchCaseFallthrough
 
-class SwitchCaseDefault
+class SwitchCaseDefault extends Node
   type: 'SwitchCase'
   test: null
   constructor: (depth) ->
     @consequent = (listOfAtLeast 1, [Statement]) depth
 
-class SwitchStatement
+class SwitchStatement extends Node
   type: @name
   cases: []
   lexical: false
