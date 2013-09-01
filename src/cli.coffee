@@ -52,7 +52,9 @@ if options.help
   --help                display this help message and exit
   --reflect             enable Reflect.parse parser; default: on if it exists
   --reflectjs           enable zaach/reflect.js parser
+  --uglifyjs            enable limited support for mishoo/UglifyJS2
   --version             display the version number and exit
+  --zeparser            enable limited support for qfox/ZeParser
 "
   process.exit 0
 
