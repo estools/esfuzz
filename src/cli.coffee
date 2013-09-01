@@ -1,7 +1,7 @@
 path = require 'path'
 
 nopt = require 'nopt'
-{fuzz} = require './index'
+{fuzz, nonstandardFuzz} = require './index'
 
 knownOpts =
   acorn: Boolean
@@ -12,6 +12,8 @@ knownOpts =
   'max-depth': Number
   reflect: Boolean
   reflectjs: Boolean
+  zeparser: Boolean
+  uglifyjs: Boolean
   version: Boolean
 
 optAliases =
@@ -27,10 +29,13 @@ options.iterations ?= 1/0
 options['max-depth'] ?= 8
 
 parsers = []
+nonstandardParsers = []
 if options.esprima then try parsers.push require 'esprima'
 if options.acorn then try parsers.push require 'acorn'
 if options.reflectjs then try parsers.push require 'reflect'
 if options.reflect then try parsers.push Reflect
+if options.uglifyjs then try nonstandardParsers.push require 'uglify-js'
+if options.zeparser then try nonstandardParsers.push (require 'zeparser').ZeParser
 
 
 if options.help
@@ -67,6 +72,8 @@ do recur = ->
     process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{++counter}"
     try
       fuzz parsers, maxDepth: options['max-depth']
+      if nonstandardParsers.length
+        nonstandardFuzz nonstandardParsers, maxDepth: options['max-depth']
     catch err
       {stack, ast, js, name, message} = err
       console.error "\b\b\b\b\b\b\b\b\b\b\b\b\b#{name}: #{message}\n\n#{stack}\n\n#{js}\n\n#{ast}"

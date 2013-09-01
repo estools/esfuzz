@@ -26,3 +26,14 @@ exports.fuzz = (parsers, options) ->
     err.js = program
     throw err
   return
+
+exports.nonstandardFuzz = (parsers, options) ->
+  programAST = Program options.maxDepth ? 8
+  try
+    program = escodegen.generate programAST, verbatim: 'raw', format: escodegen.FORMAT_MINIFY
+    parser.parse program for parser in parsers
+  catch err
+    err.ast = programAST
+    err.js = program
+    throw err
+  return
