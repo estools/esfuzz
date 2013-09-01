@@ -45,7 +45,7 @@ Character = ->
       return
   ])()
 
-Boundary = -> randomElement ['^', '$', '\\b']
+Boundary = -> randomElement ['^', '$', '\\b', '\\B']
 
 CharacterClassCharacter = ->
   ch = '-'
@@ -67,7 +67,7 @@ CharacterClass = (depth) ->
 
 Grouping = (depth) ->
   return '()' unless depth--
-  "(#{randomeElement ['?:', '?!', '?=', '']}#{RegExpSource depth})"
+  "(#{randomElement ['?:', '?!', '?=', '']}#{RegExpSource depth})"
 
 Repetition = (depth) ->
   return '' unless depth--
@@ -80,15 +80,9 @@ RegExpSource = (depth) ->
   (oneOf [Alternation, Grouping, CharacterClass, Repetition, Sequence]) depth
 
 
-genSafeRegExp = ->
-  try
-    new RegExp RegExpSource 6
-  catch e
-    genSafeRegExp()
-
 class RegExp_
   type: 'Literal'
   constructor: (depth) ->
-    @value = genSafeRegExp()
+    @value = new RegExp RegExpSource 8
 
 module.exports = -> new RegExp_ arguments...
