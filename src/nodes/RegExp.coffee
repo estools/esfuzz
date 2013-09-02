@@ -83,7 +83,7 @@ RegExpSource = (depth) ->
 
 class RegExp_ extends Node
   type: 'Literal'
-  constructor: (depth) ->
+  constructor: ->
     @value = new RegExp RegExpSource 8
 
-module.exports = -> new RegExp_ arguments...
+module.exports = -> new RegExp_

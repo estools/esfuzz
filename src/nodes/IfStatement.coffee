@@ -5,10 +5,11 @@ Expression = require '../classes/Expression'
 
 class IfStatement extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @test = Expression depth
-    @consequent = Statement depth
-    @alternate = (maybe Statement) depth
+    ancestors = [this].concat ancestors
+    @test = Expression depth, ancestors
+    @consequent = Statement depth, ancestors
+    @alternate = (maybe Statement) depth, ancestors
 
 module.exports = construct IfStatement

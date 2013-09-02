@@ -4,10 +4,11 @@ Expression = require '../classes/Expression'
 
 class ConditionalExpression extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @test = Expression depth
-    @consequent = Expression depth
-    @alternate = Expression depth
+    ancestors = [this].concat ancestors
+    @test = Expression depth, ancestors
+    @consequent = Expression depth, ancestors
+    @alternate = Expression depth, ancestors
 
 module.exports = construct ConditionalExpression

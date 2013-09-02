@@ -21,33 +21,34 @@ eq = (x, y) ->
     y.kind is 'init' and x.kind in ['get', 'set']
   )
 
-Key = (args...) -> (oneOf [String_, Number_, IdentifierName]) args...
+Key = oneOf [String_, Number_, IdentifierName]
 
-Property = (depth) ->
+Property = ->
   kind: 'init'
-  key: Key depth
-  value: Expression depth
+  key: Key arguments...
+  value: Expression arguments...
 
-Getter = (depth) ->
-  fn = FunctionExpression depth
+Getter = ->
+  fn = FunctionExpression arguments...
   fn.params.length = 0
   kind: 'get'
-  key: Key depth
+  key: Key arguments...
   value: fn
 
-Setter = (depth) ->
-  fn = FunctionExpression depth
-  fn.params = [Identifier depth]
+Setter = ->
+  fn = FunctionExpression arguments...
+  fn.params = [Identifier arguments...]
   kind: 'set'
-  key: Key depth
+  key: Key arguments...
   value: fn
 
 class ObjectExpression extends Node
   type: @name
   properties: []
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
     if depth > 0
-      @properties = nubBy ((listOf [Property, Getter, Setter]) depth), eq
+      ancestors = [this].concat ancestors
+      @properties = nubBy ((listOf [Property, Getter, Setter]) depth, ancestors), eq
 
 module.exports = construct ObjectExpression

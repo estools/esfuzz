@@ -8,9 +8,10 @@ OPERATORS = ['-', '+', '!', '~', 'typeof', 'void', 'delete']
 class UnaryExpression extends Node
   type: @name
   prefix: true
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
+    ancestors = [this].concat ancestors
     @operator = randomElement OPERATORS
-    @argument = Expression depth
+    @argument = Expression depth, ancestors
 
 module.exports = construct UnaryExpression

@@ -5,9 +5,10 @@ Statement = require '../classes/Statement'
 class BlockStatement extends Node
   type: @name
   body: []
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
     if depth > 0
-      @body = (listOf [Statement]) depth
+      ancestors = [this].concat ancestors
+      @body = (listOf [Statement]) depth, ancestors
 
 module.exports = construct BlockStatement

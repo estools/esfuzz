@@ -4,8 +4,9 @@ Expression = require '../classes/Expression'
 
 class ArrayExpression extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @elements = (listOf [maybe Expression]) depth
+    ancestors = [this].concat ancestors
+    @elements = (listOf [maybe Expression]) depth, ancestors
 
 module.exports = construct ArrayExpression

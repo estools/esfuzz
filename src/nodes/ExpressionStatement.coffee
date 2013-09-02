@@ -4,8 +4,8 @@ Expression = require '../classes/Expression'
 
 class ExpressionStatement extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @expression = Expression depth
+    @expression = Expression depth, [this].concat ancestors
 
 module.exports = construct ExpressionStatement

@@ -8,21 +8,23 @@ Identifier = require './Identifier'
 class CatchClause extends Node
   type: 'CatchClause'
   guard: null
-  constructor: (depth) ->
-    @param = Pattern depth
-    @body = BlockStatement depth
+  constructor: (depth, ancestors) ->
+    ancestors = [this].concat ancestors
+    @param = Pattern depth, ancestors
+    @body = BlockStatement depth, ancestors
 
 class TryStatement extends Node
   type: @name
   guardedHandlers: []
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @block = BlockStatement depth
+    ancestors = [this].concat ancestors
+    @block = BlockStatement depth, ancestors
     if randomBool()
-      @handler = (maybe construct CatchClause) depth
-      @finalizer = BlockStatement depth
+      @handler = (maybe construct CatchClause) depth, ancestors
+      @finalizer = BlockStatement depth, ancestors
     else
-      @handler = (construct CatchClause) depth
-      @finalizer = (maybe BlockStatement) depth
+      @handler = (construct CatchClause) depth, ancestors
+      @finalizer = (maybe BlockStatement) depth, ancestors
 
 module.exports = construct TryStatement

@@ -5,9 +5,10 @@ Statement = require '../classes/Statement'
 
 class DoWhileStatement extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @body = Statement depth
-    @test = Expression depth
+    ancestors = [this].concat ancestors
+    @body = Statement depth, ancestors
+    @test = Expression depth, ancestors
 
 module.exports = construct DoWhileStatement

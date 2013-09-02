@@ -7,10 +7,11 @@ OPERATORS = ['||', '&&']
 
 class LogicalExpression extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
+    ancestors = [this].concat ancestors
     @operator = randomElement OPERATORS
-    @left = Expression depth
-    @right = Expression depth
+    @left = Expression depth, ancestors
+    @right = Expression depth, ancestors
 
 module.exports = construct LogicalExpression

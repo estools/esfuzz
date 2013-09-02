@@ -5,9 +5,10 @@ Expression = require '../classes/Expression'
 
 class WithStatement extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @object = Expression depth
-    @body = Statement depth
+    ancestors = [this].concat ancestors
+    @object = Expression depth, ancestors
+    @body = Statement depth, ancestors
 
 module.exports = construct WithStatement

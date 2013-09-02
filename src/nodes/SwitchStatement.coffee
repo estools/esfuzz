@@ -5,27 +5,30 @@ Expression = require '../classes/Expression'
 
 class SwitchCase extends Node
   type: 'SwitchCase'
-  constructor: (depth) ->
-    @test = Expression depth
-    @consequent = (listOfAtLeast 1, [Statement]) depth
+  constructor: (depth, ancestors) ->
+    ancestors = [this].concat ancestors
+    @test = Expression depth, ancestors
+    @consequent = (listOfAtLeast 1, [Statement]) depth, ancestors
 
 # TODO: SwitchCaseFallthrough
 
 class SwitchCaseDefault extends Node
   type: 'SwitchCase'
   test: null
-  constructor: (depth) ->
-    @consequent = (listOfAtLeast 1, [Statement]) depth
+  constructor: (depth, ancestors) ->
+    ancestors = [this].concat ancestors
+    @consequent = (listOfAtLeast 1, [Statement]) depth, ancestors
 
 class SwitchStatement extends Node
   type: @name
   cases: []
   lexical: false
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
     if depth > 0
-      @discriminant = Expression depth
-      @cases = ((listOf [construct SwitchCase]) depth).concat (oneOf [(construct SwitchCaseDefault), -> []]) depth
+      ancestors = [this].concat ancestors
+      @discriminant = Expression depth, ancestors
+      @cases = ((listOf [construct SwitchCase]) depth, ancestors).concat (oneOf [(construct SwitchCaseDefault), -> []]) depth, ancestors
     else
       @discriminant = Expression 0
 

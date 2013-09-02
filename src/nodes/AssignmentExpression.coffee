@@ -9,12 +9,13 @@ OPERATORS = ['=', '+=', '-=', '*=', '/=', '%=', '<<=', '>>=', '>>>=', '|=', '^='
 
 class AssignmentExpression extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
     @operator = randomElement OPERATORS
     if depth > 0
-      @left = LHSExpression depth
-      @right = Expression depth
+      ancestors = [this].concat ancestors
+      @left = LHSExpression depth, ancestors
+      @right = Expression depth, ancestors
     else
       @left = Identifier 0
       @right = Expression 0

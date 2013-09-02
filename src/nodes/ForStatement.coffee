@@ -6,11 +6,12 @@ VariableDeclaration = require './VariableDeclaration'
 
 class ForStatement extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @init = (maybe oneOf [VariableDeclaration, Expression]) depth
-    @test = (maybe Expression) depth
-    @update = (maybe Expression) depth
-    @body = Statement depth
+    ancestors = [this].concat ancestors
+    @init = (maybe oneOf [VariableDeclaration, Expression]) depth, ancestors
+    @test = (maybe Expression) depth, ancestors
+    @update = (maybe Expression) depth, ancestors
+    @body = Statement depth, ancestors
 
 module.exports = construct ForStatement

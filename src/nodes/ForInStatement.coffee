@@ -8,12 +8,13 @@ VariableDeclaration = require './VariableDeclaration'
 class ForInStatement extends Node
   type: @name
   each: false
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
+    ancestors = [this].concat ancestors
     # TODO: disabled until https://code.google.com/p/esprima/issues/detail?id=449 is resolved
     #@left = (oneOf [VariableDeclaration, LHSExpression]) depth
-    @left = LHSExpression depth
-    @right = Expression depth
-    @body = Statement depth
+    @left = LHSExpression depth, ancestors
+    @right = Expression depth, ancestors
+    @body = Statement depth, ancestors
 
 module.exports = construct ForInStatement

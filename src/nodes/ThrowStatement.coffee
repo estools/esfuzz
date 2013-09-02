@@ -4,8 +4,9 @@ Expression = require '../classes/Expression'
 
 class ThrowStatement extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @argument = Expression depth
+    ancestors = [this].concat ancestors
+    @argument = Expression depth, ancestors
 
 module.exports = construct ThrowStatement

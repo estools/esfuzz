@@ -2,8 +2,8 @@ Literal = require './Literal'
 {oneOf} = require '../combinators'
 
 expressions = [Literal]
-module.exports = (depth, args...) ->
-  return Literal 0, args... unless depth > 0
+module.exports = (depth) ->
+  return Literal 0 unless depth > 0
   (oneOf expressions) arguments...
 
 expressions.push require '../nodes/ArrayExpression'

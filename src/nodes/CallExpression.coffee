@@ -6,11 +6,12 @@ Identifier = require './Identifier'
 class CallExpression extends Node
   type: @name
   arguments: []
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
     if depth > 0
-      @callee = Expression depth
-      @arguments = (listOf [Expression]) depth
+      ancestors = [this].concat ancestors
+      @callee = Expression depth, ancestors
+      @arguments = (listOf [Expression]) depth, ancestors
     else
       @callee = Identifier 0
 

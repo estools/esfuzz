@@ -10,10 +10,11 @@ class FunctionExpression extends Node
   rest: null
   generator: false
   expression: false
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @id = (maybe Identifier) depth
-    @params = (listOf [Pattern]) depth
-    @body = BlockStatement depth
+    ancestors = [this].concat ancestors
+    @id = (maybe Identifier) depth, ancestors
+    @params = (listOf [Pattern]) depth, ancestors
+    @body = BlockStatement depth, ancestors
 
 module.exports = construct FunctionExpression

@@ -7,7 +7,8 @@ class Program extends Node
   body: []
   constructor: (depth) ->
     --depth
+    ancestors = [this]
     if depth > 0
-      @body = (listOfAtLeast 1, [Statement]) depth
+      @body = (listOfAtLeast 1, [Statement]) depth, ancestors
 
 module.exports = construct Program

@@ -5,9 +5,10 @@ Statement = require '../classes/Statement'
 
 class WhileStatement extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @test = Expression depth
-    @body = Statement depth
+    ancestors = [this].concat ancestors
+    @test = Expression depth, ancestors
+    @body = Statement depth, ancestors
 
 module.exports = construct WhileStatement

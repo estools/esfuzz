@@ -5,22 +5,25 @@ IdentifierName = require './IdentifierName'
 
 class MemberExpression extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @object = Expression depth
+    ancestors = [this].concat ancestors
+    @object = Expression depth, ancestors
 
 class DynamicMemberExpression extends MemberExpression
-  constructor: (depth) ->
-    --depth
+  constructor: (depth, ancestors) ->
     MemberExpression.apply this, arguments
-    @property = Expression depth
+    --depth
+    ancestors = [this].concat ancestors
+    @property = Expression depth, ancestors
     @computed = true
 
 class StaticMemberExpression extends MemberExpression
-  constructor: (depth) ->
-    --depth
+  constructor: (depth, ancestors) ->
     MemberExpression.apply this, arguments
-    @property = IdentifierName depth
+    --depth
+    ancestors = [this].concat ancestors
+    @property = IdentifierName depth, ancestors
     @computed = false
 
 module.exports = oneOf [(construct DynamicMemberExpression), construct StaticMemberExpression]

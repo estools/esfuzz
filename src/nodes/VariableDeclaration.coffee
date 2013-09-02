@@ -6,15 +6,16 @@ Identifier = require './Identifier'
 
 class VariableDeclarator extends Node
   type: @name
-  constructor: (depth) ->
-    @id = Pattern depth
-    @init = (maybe Expression) depth
+  constructor: (depth, ancestors) ->
+    ancestors = [this].concat ancestors
+    @id = Pattern depth, ancestors
+    @init = (maybe Expression) depth, ancestors
 
 class VariableDeclaration extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
-    @declarations = (listOfAtLeast 1, [construct VariableDeclarator]) depth
+    @declarations = (listOfAtLeast 1, [construct VariableDeclarator]) depth, ancestors
     @kind = 'var' # TODO: let/const
 
 module.exports = construct VariableDeclaration
