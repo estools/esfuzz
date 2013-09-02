@@ -1,4 +1,5 @@
 Node = require '../node'
+Pattern = require '../classes/Pattern'
 BlockStatement = require './BlockStatement'
 Identifier = require './Identifier'
 {construct, listOf} = require '../combinators'
@@ -12,7 +13,7 @@ class FunctionDeclaration extends Node
   constructor: (depth) ->
     --depth
     @id = Identifier depth
-    @params = (listOf [Identifier]) depth
+    @params = (listOf [Pattern]) depth
     @body = BlockStatement depth
 
 module.exports = construct FunctionDeclaration

@@ -1,4 +1,5 @@
 Node = require '../node'
+Pattern = require '../classes/Pattern'
 BlockStatement = require './BlockStatement'
 Identifier = require './Identifier'
 {construct, maybe} = require '../combinators'
@@ -8,7 +9,7 @@ class CatchClause extends Node
   type: 'CatchClause'
   guard: null
   constructor: (depth) ->
-    @param = Identifier depth
+    @param = Pattern depth
     @body = BlockStatement depth
 
 class TryStatement extends Node
