@@ -10,12 +10,8 @@ class UpdateExpression extends Node
   constructor: (depth) ->
     --depth
     ancestors = [this].concat ancestors
-    lhs = LHSExpression depth, ancestors
-    # TODO: remove once https://github.com/mishoo/UglifyJS2/issues/284 is fixed
-    while lhs.type in ['MemberExpression', 'CallExpression']
-      lhs = LHSExpression depth, ancestors
     @operator = randomElement OPERATORS
-    @argument = lhs
+    @argument = LHSExpression depth, ancestors
     @prefix = randomBool()
 
 module.exports = construct UpdateExpression
