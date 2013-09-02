@@ -4,16 +4,19 @@ Identifier = require './Identifier'
 {construct, maybe} = require '../combinators'
 {randomElement} = require '../random'
 
+FUNCTIONS = ['FunctionDeclaration', 'FunctionExpression']
+ITERATION_STATEMENTS = ['ForStatement', 'ForInStatement', 'DoWhileStatement', 'WhileStatement']
+
 breakable = (ancestors) ->
   for ancestor in ancestors
-    return false if ancestor.type in ['FunctionDeclaration', 'FunctionExpression']
-    return true if ancestor.type in ['ForStatement', 'ForInStatement', 'DoWhileStatement', 'SwitchCase', 'WhileStatement']
+    return false if ancestor.type in FUNCTIONS
+    return true if ancestor.type in ITERATION_STATEMENTS or ancestor.type is 'SwitchStatement'
   false
 
 labels = (ancestors) ->
   accum = []
   for ancestor in ancestors
-    break if ancestor.type in ['FunctionDeclaration', 'FunctionExpression']
+    break if ancestor.type in FUNCTIONS
     accum.push ancestor.label if ancestor.type is 'LabeledStatement'
   accum
 

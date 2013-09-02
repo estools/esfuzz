@@ -4,17 +4,20 @@ Identifier = require './Identifier'
 {construct, maybe} = require '../combinators'
 {randomElement} = require '../random'
 
+FUNCTIONS = ['FunctionDeclaration', 'FunctionExpression']
+ITERATION_STATEMENTS = ['ForStatement', 'ForInStatement', 'DoWhileStatement', 'WhileStatement']
+
 continuable = (ancestors) ->
   for ancestor in ancestors
-    return false if ancestor.type in ['FunctionDeclaration', 'FunctionExpression']
-    return true if ancestor.type in ['ForStatement', 'ForInStatement', 'DoWhileStatement', 'WhileStatement']
+    return false if ancestor.type in FUNCTIONS
+    return true if ancestor.type in ITERATION_STATEMENTS
   false
 
 labels = (ancestors) ->
   accum = []
-  for ancestor in ancestors
-    break if ancestor.type in ['FunctionDeclaration', 'FunctionExpression']
-    accum.push ancestor.label if ancestor.type is 'LabeledStatement'
+  for ancestor, i in ancestors
+    break if ancestor.type in FUNCTIONS
+    accum.push ancestor.label if ancestor.type is 'LabeledStatement' and i > 0 and ancestors[i-1].type in ITERATION_STATEMENTS
   accum
 
 class ContinueStatement extends Node
