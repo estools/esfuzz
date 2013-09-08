@@ -31,20 +31,22 @@ esfuzz is currently a work in progress. The current status is on the wiki: https
 
 ### Module Interface
 
-#### `fuzz(parsers, options)` -> void
+#### `generate(options)` -> `SpiderMonkey_AST`
 
-The exported `fuzz` function takes a list of objects that have a `parse` method
-that obeys the SpiderMonkey Reflect.parse API. The fuzz function will generate
-a random program, generate concrete syntax, run it through each parser, and
-compare the outputs of each parser to the generated program. If any of the
-parsers fail or create a program that does not match the generated program, an
-error will be thrown. Available options:
+Generate a random SpiderMonkey AST that represents a valid ECMAScript program.
+Available options:
 
   * `maxDepth`: create ASTs with a height no greater than this value
 
-#### `nonstandardFuzz(parsers, options)` -> void
+#### `fuzz(programAST, parsers)` -> `void`
 
-Identical to the exported `fuzz` function, except does not round-trip to check
-for correct parses, only checking that the parsers do no raise errors for valid
-programs. This allows one to fuzz parsers that do not generate output in the
-standard SpiderMonkey AST format.
+The exported `fuzz` function takes a SpiderMonkey AST and a list of objects
+that have a `parse` method that obeys the SpiderMonkey Reflect.parse API. This
+function will generate concrete syntax and run it through each parser. If any
+of the parsers fail to parse the program, an error will be thrown.
+
+#### `fuzzAndRoundtrip(programAST, parsers)` -> `void`
+
+Identical to `fuzz`, except additionally compares the outputs of each parser to
+the generated program. If any of the parsers fail to parse the program or fail
+to generate an AST equivalent to the given one, an error will be thrown.

@@ -1,7 +1,7 @@
 path = require 'path'
 
 nopt = require 'nopt'
-{fuzz, nonstandardFuzz} = require './index'
+{generate, fuzz, fuzzAndRoundtrip} = require './index'
 
 knownOpts =
   acorn: Boolean
@@ -73,9 +73,10 @@ do recur = ->
   if counter < options.iterations
     process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{++counter}"
     try
-      fuzz parsers, maxDepth: options['max-depth']
+      program = generate maxDepth: options['max-depth']
+      fuzzAndRoundtrip program, parsers
       if nonstandardParsers.length
-        nonstandardFuzz nonstandardParsers, maxDepth: options['max-depth']
+        fuzz program, nonstandardParsers
     catch err
       {stack, ast, js, name, message} = err
       console.error "\b\b\b\b\b\b\b\b\b\b\b\b\b#{name}: #{message}\n\n#{stack}\n\n#{js}\n\n#{ast}"
