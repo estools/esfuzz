@@ -48,8 +48,8 @@
   "devDependencies": {
     "coffee-script-redux": "2.0.0-beta7",
     "commonjs-everywhere": "0.9.x",
-    "mocha": "~1.8.1",
-    "semver": "~1.1.4"
+    "mocha": "1.x",
+    "semver": "2.x"
   },
   "scripts": {
     "test": "make test"
