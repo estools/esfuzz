@@ -1,8 +1,7 @@
 # esfuzz
 
-JS fuzzer for generative testing of parsers that implement the SpiderMonkey Reflect.parse API
-
-esfuzz is currently a work in progress. The current status is on the wiki: https://github.com/michaelficarra/esfuzz/wiki/status
+Fuzzer for generative testing of ECMAScript parsers, especially those that
+implement the [SpiderMonkey `Reflect.parse` API](https://developer.mozilla.org/en-US/docs/SpiderMonkey/Parser_API).
 
 ## Install
 
