@@ -26,7 +26,7 @@ options.esprima ?= on
 options.acorn ?= on
 options.reflect ?= Reflect? and 'function' is typeof Reflect.parse
 options.iterations ?= 1/0
-options['max-depth'] ?= 8
+options['max-depth'] ?= 7
 
 parsers = []
 nonstandardParsers = []

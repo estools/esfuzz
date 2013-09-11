@@ -20,7 +20,7 @@ randomFormat = ->
   semicolons: randomBool()
 
 exports.generate = generate = (options = {}) ->
-  Program options.maxDepth ? 8
+  Program options.maxDepth ? 7
 
 exports.render = render = (programAST, format = randomFormat()) ->
   escodegen.generate programAST, verbatim: 'raw', format: format
