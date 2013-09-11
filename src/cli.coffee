@@ -27,6 +27,8 @@ options.acorn ?= on
 options.reflect ?= Reflect? and 'function' is typeof Reflect.parse
 options.iterations ?= 1/0
 options['max-depth'] ?= 7
+# camel case dashed options
+options.maxDepth = options['max-depth']
 
 parsers = []
 nonstandardParsers = []
@@ -73,7 +75,7 @@ do recur = ->
   if counter < options.iterations
     process.stdout.write "\b\b\b\b\b\b\b\b\b\b\b\b\b\b#{++counter}"
     try
-      program = generate maxDepth: options['max-depth']
+      program = generate maxDepth: options.maxDepth
       fuzzAndRoundtrip program, parsers
       if nonstandardParsers.length
         fuzz program, nonstandardParsers
