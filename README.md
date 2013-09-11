@@ -37,12 +37,18 @@ Available options:
 
   * `maxDepth`: create ASTs with a height no greater than this value
 
+#### `render(programAST, format)` -> `String` (JS program)
+
+Render a SpiderMonkey AST as an ECMAScript program. If the `format` argument is
+omitted, a random format will be used. Otherwise, the given object must be in
+the format of escodegen's `format` option.
+
 #### `fuzz(programAST, parsers)` -> `void`
 
-The exported `fuzz` function takes a SpiderMonkey AST and a list of objects
-that have a `parse` method that obeys the SpiderMonkey Reflect.parse API. This
-function will generate concrete syntax and run it through each parser. If any
-of the parsers fail to parse the program, an error will be thrown.
+Takes a SpiderMonkey AST and a list of objects that have a `parse` method that
+obeys the SpiderMonkey Reflect.parse API. This function will generate concrete
+syntax and run it through each parser. If any of the parsers fail to parse the
+program, an error will be thrown.
 
 #### `fuzzAndRoundtrip(programAST, parsers)` -> `void`
 

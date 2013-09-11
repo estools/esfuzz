@@ -9,7 +9,6 @@ class RoundtripFailureError extends Error
     Error.call this
     Error.captureStackTrace? this, RoundtripFailureError
 
-render = (program) -> escodegen.generate program, format: escodegen.FORMAT_MINIFY
 randomFormat = ->
   indent:
     style: randomElement ['', '  ', '\t'] # TODO: include other whitespace characters
@@ -23,12 +22,17 @@ randomFormat = ->
 exports.generate = generate = (options = {}) ->
   Program options.maxDepth ? 8
 
+exports.render = render = (programAST, format = randomFormat()) ->
+  escodegen.generate programAST, verbatim: 'raw', format: format
+
+renderForComparison = (programAST) -> render programAST, escodegen.FORMAT_MINIFY
+
 exports.fuzzAndRoundtrip = (programAST, parsers) ->
   try
     format = randomFormat()
-    program = escodegen.generate programAST, verbatim: 'raw', format: format
-    roundTrippedPrograms = (render parser.parse program for parser in parsers)
-    targetProgram = render programAST
+    program = render programAST, format
+    roundTrippedPrograms = (renderForComparison parser.parse program for parser in parsers)
+    targetProgram = renderForComparison programAST
   catch err
     err.ast = programAST
     err.js = program
@@ -44,7 +48,7 @@ exports.fuzzAndRoundtrip = (programAST, parsers) ->
 exports.fuzz = (programAST, parsers) ->
   try
     format = randomFormat()
-    program = escodegen.generate programAST, verbatim: 'raw', format: format
+    program = render programAST, format
     parser.parse program for parser in parsers
   catch err
     err.ast = programAST
