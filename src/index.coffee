@@ -20,7 +20,7 @@ randomFormat = ->
   parentheses: randomBool()
   semicolons: randomBool()
 
-exports.generate = (options) ->
+exports.generate = generate = (options = {}) ->
   Program options.maxDepth ? 8
 
 exports.fuzzAndRoundtrip = (programAST, parsers) ->
