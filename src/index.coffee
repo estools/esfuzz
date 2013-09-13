@@ -1,5 +1,5 @@
 escodegen = require 'escodegen'
-{randomElement, randomInt, randomBool} = require './random'
+{randomElement, randomInt, randomBool, randomWhitespace, randomLineTerminator} = require './random'
 
 Program = require './nodes/Program'
 
@@ -11,15 +11,15 @@ class RoundtripFailureError extends Error
 
 randomFormat = ->
   indent:
-    style: randomElement ['', '  ', '\t'] # TODO: include other whitespace characters
-    base: randomElement ['', '  ', '\t'] # TODO: include other whitespace characters
+    style: randomWhitespace()
+    base: randomInt 2
   quotes: randomElement ['auto', 'double', 'single']
   escapeless: randomBool()
   compact: randomBool()
   parentheses: randomBool()
   semicolons: randomBool()
 
-exports.generate = generate = (options = {}) ->
+exports.generate = (options = {}) ->
   Program options.maxDepth ? 7
 
 exports.render = render = (programAST, format = randomFormat()) ->
