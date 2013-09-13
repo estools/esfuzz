@@ -25,23 +25,21 @@ exports.generate = generate = (options = {}) ->
 exports.render = render = (programAST, format = randomFormat()) ->
   escodegen.generate programAST, verbatim: 'raw', format: format
 
-renderForComparison = (programAST) -> render programAST, escodegen.FORMAT_MINIFY
+renderForComparison = (programAST) ->
+  escodegen.generate programAST, format: escodegen.FORMAT_MINIFY
 
 exports.fuzzAndRoundtrip = (programAST, parsers) ->
+  format = randomFormat()
   try
-    format = randomFormat()
     program = render programAST, format
     roundTrippedPrograms = (renderForComparison parser.parse program for parser in parsers)
     targetProgram = renderForComparison programAST
+    for roundTrippedProgram in roundTrippedPrograms when roundTrippedProgram isnt targetProgram
+      throw new RoundtripFailureError
   catch err
     err.ast = programAST
     err.js = program
     err.format = format
-    throw err
-  for roundTrippedProgram in roundTrippedPrograms when roundTrippedProgram isnt targetProgram
-    err = new RoundtripFailureError
-    err.ast = programAST
-    err.js = program
     throw err
   return
 
