@@ -35,15 +35,15 @@
     "test": "test"
   },
   "dependencies": {
-    "escodegen": "git+ssh://github.com/Constellation/escodegen.git#master",
+    "escodegen": "git://github.com/Constellation/escodegen.git",
     "nopt": "~2.1.2"
   },
   "optionalDependencies": {
-    "esprima": "git+ssh://github.com/ariya/esprima.git#master",
-    "acorn": "git+ssh://github.com/marijnh/acorn.git#master",
-    "reflect": "git+ssh://github.com/zaach/reflect.js.git#master",
-    "zeparser": "0.0.7",
-    "uglify-js": "git+ssh://github.com:mishoo/UglifyJS2.git#master"
+    "esprima": "git://github.com/ariya/esprima.git",
+    "acorn": "git://github.com/marijnh/acorn.git",
+    "reflect": "git://github.com/zaach/reflect.js.git",
+    "zeparser": "git://github.com/qfox/ZeParser.git",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2.git"
   },
   "devDependencies": {
     "coffee-script-redux": "2.0.0-beta7",
