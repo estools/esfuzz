@@ -1,6 +1,6 @@
 {
   "name": "esfuzz",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "JS fuzzer for generative testing of parsers that implement the SpiderMonkey Reflect.parse API",
   "homepage": "https://github.com/michaelficarra/esfuzz",
   "keywords": [
