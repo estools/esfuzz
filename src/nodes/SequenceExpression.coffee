@@ -4,7 +4,7 @@ Expression = require '../classes/Expression'
 
 class SequenceExpression extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
     ancestors = [this].concat ancestors
     @expressions = (listOfAtLeast 2, [Expression]) depth, ancestors

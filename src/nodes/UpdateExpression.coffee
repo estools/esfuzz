@@ -7,7 +7,7 @@ OPERATORS = ['++', '--']
 
 class UpdateExpression extends Node
   type: @name
-  constructor: (depth) ->
+  constructor: (depth, ancestors) ->
     --depth
     ancestors = [this].concat ancestors
     @operator = randomElement OPERATORS
