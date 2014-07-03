@@ -6,8 +6,10 @@ Identifier = require './Identifier'
 labelNames = (ancestors) ->
   accum = []
   for ancestor in ancestors
-    break if ancestor.type in ['FunctionDeclaration', 'FunctionExpression']
-    accum.push ancestor.label.name if ancestor.type is 'LabeledStatement'
+    if ancestor.type is 'FunctionDeclaration'
+      break
+    else if ancestor.type is 'LabeledStatement'
+      accum.push ancestor.label.name
   accum
 
 class LabeledStatement extends Node
